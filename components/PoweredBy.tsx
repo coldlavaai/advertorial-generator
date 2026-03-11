@@ -1,18 +1,34 @@
 export default function PoweredBy() {
   return (
     <div
-      className="flex items-center justify-center gap-2.5 py-5"
-      style={{ borderTop: '1px solid rgba(6,182,212,0.06)' }}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10,
+        padding: '20px 0',
+        borderTop: '1px solid rgba(6,182,212,0.06)',
+      }}
     >
       <span
-        className="font-mono text-[0.6rem] tracking-[0.15em] uppercase"
-        style={{ color: 'rgba(255,255,255,0.2)' }}
+        style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 10,
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: 'rgba(255,255,255,0.25)',
+        }}
       >
         Powered by
       </span>
       <span
-        className="font-mono text-[0.7rem] font-bold tracking-[0.1em]"
-        style={{ color: 'rgba(6,182,212,0.6)' }}
+        style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 12,
+          fontWeight: 700,
+          letterSpacing: '0.1em',
+          color: 'rgba(6,182,212,0.6)',
+        }}
       >
         COLD LAVA
       </span>

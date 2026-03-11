@@ -9,7 +9,51 @@ interface SectionEditorProps {
   productName: string;
 }
 
+const labelStyle: React.CSSProperties = {
+  fontFamily: "'JetBrains Mono', monospace",
+  fontSize: 12,
+  fontWeight: 500,
+  textTransform: 'uppercase',
+  letterSpacing: '0.12em',
+  color: '#86868B',
+  display: 'block',
+  marginBottom: 8,
+};
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  boxSizing: 'border-box',
+  background: '#0a0a0a',
+  border: '1px solid #2a2a2a',
+  color: '#FFFFFF',
+  padding: '12px 16px',
+  borderRadius: 10,
+  fontSize: 15,
+  fontFamily: "'Inter', sans-serif",
+  outline: 'none',
+};
+
+const textareaStyle: React.CSSProperties = {
+  ...inputStyle,
+  resize: 'vertical',
+  minHeight: 110,
+};
+
+const hintStyle: React.CSSProperties = {
+  fontFamily: "'JetBrains Mono', monospace",
+  fontSize: 12,
+  marginTop: 6,
+  color: '#86868B',
+};
+
 export default function SectionEditor({ section, content, onUpdate, productName }: SectionEditorProps) {
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.target.style.borderColor = '#06B6D4';
+  };
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.target.style.borderColor = '#2a2a2a';
+  };
+
   const renderField = (
     label: string,
     field: keyof SectionContent,
@@ -19,15 +63,17 @@ export default function SectionEditor({ section, content, onUpdate, productName 
     const value = (content[field] as string) || '';
 
     return (
-      <div className="mb-5">
-        <label className="label-mono block mb-2">{label}</label>
+      <div style={{ marginBottom: 20 }}>
+        <label style={labelStyle}>{label}</label>
         {type === 'textarea' ? (
           <textarea
             value={value}
             onChange={(e) => onUpdate({ [field]: e.target.value })}
             placeholder={placeholder || `Enter ${label.toLowerCase()}...`}
-            className="textarea w-full min-h-[110px]"
+            style={textareaStyle}
             rows={4}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         ) : (
           <input
@@ -35,10 +81,12 @@ export default function SectionEditor({ section, content, onUpdate, productName 
             value={value}
             onChange={(e) => onUpdate({ [field]: e.target.value })}
             placeholder={placeholder || `Enter ${label.toLowerCase()}...`}
-            className="input w-full"
+            style={inputStyle}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
         )}
-        <p className="font-mono text-xs mt-1.5 text-cl-muted">
+        <p style={hintStyle}>
           Use [Product Name] as placeholder for &ldquo;{productName}&rdquo;
         </p>
       </div>
@@ -49,12 +97,17 @@ export default function SectionEditor({ section, content, onUpdate, productName 
     const points = content.bulletPoints || [];
 
     return (
-      <div className="mb-5">
-        <label className="label-mono block mb-2">Bullet Points</label>
-        <div className="space-y-2">
+      <div style={{ marginBottom: 20 }}>
+        <label style={labelStyle}>Bullet Points</label>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {points.map((point, index) => (
-            <div key={index} className="flex gap-2 items-center">
-              <span className="font-mono text-xs shrink-0 text-cl-cyan">
+            <div key={index} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 12,
+                flexShrink: 0,
+                color: '#06B6D4',
+              }}>
                 {String(index + 1).padStart(2, '0')}
               </span>
               <input
@@ -66,14 +119,29 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                   onUpdate({ bulletPoints: newPoints });
                 }}
                 placeholder={`Point ${index + 1}`}
-                className="input flex-1"
+                style={{ ...inputStyle, flex: 1 }}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
               />
               <button
                 onClick={() => {
                   const newPoints = points.filter((_, i) => i !== index);
                   onUpdate({ bulletPoints: newPoints });
                 }}
-                className="w-8 h-8 flex items-center justify-center rounded-lg bg-cl-card border border-cl-red/20 text-cl-red hover:bg-cl-red/10 transition-colors shrink-0"
+                style={{
+                  width: 32,
+                  height: 32,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 8,
+                  background: '#111111',
+                  border: '1px solid rgba(220,38,38,0.2)',
+                  color: '#dc2626',
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                  fontSize: 16,
+                }}
               >
                 ×
               </button>
@@ -82,7 +150,20 @@ export default function SectionEditor({ section, content, onUpdate, productName 
         </div>
         <button
           onClick={() => onUpdate({ bulletPoints: [...points, ''] })}
-          className="btn-ghost text-sm mt-3"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '8px 16px',
+            border: '1px solid #2a2a2a',
+            background: '#111111',
+            color: '#86868B',
+            borderRadius: 10,
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 13,
+            cursor: 'pointer',
+            marginTop: 12,
+          }}
         >
           + Add Point
         </button>
@@ -93,17 +174,30 @@ export default function SectionEditor({ section, content, onUpdate, productName 
   return (
     <div>
       {/* Section Header */}
-      <div className="mb-6">
-        <div className="pill mb-3">{section.type}</div>
-        <h2 className="text-2xl font-bold text-white">
+      <div style={{ marginBottom: 24 }}>
+        <span style={{
+          display: 'inline-block',
+          background: '#1a1a1a',
+          border: '1px solid #2a2a2a',
+          padding: '6px 12px',
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 12,
+          textTransform: 'uppercase',
+          letterSpacing: '0.08em',
+          color: '#06B6D4',
+          borderRadius: 6,
+          marginBottom: 12,
+        }}>{section.type}</span>
+        <h2 style={{ fontSize: 24, fontWeight: 700, color: '#FFFFFF', margin: 0, marginBottom: 6 }}>
           Edit {section.type.charAt(0).toUpperCase() + section.type.slice(1)} Section
         </h2>
-        <p className="mt-1.5 text-sm text-cl-muted">
+        <p style={{ marginTop: 6, fontSize: 14, color: '#86868B' }}>
           Customize this section to match your product and message
         </p>
       </div>
 
-      <div className="section-divider" />
+      {/* Divider */}
+      <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.1), transparent)', margin: '24px 0' }} />
 
       {/* Dynamic Fields */}
       {(section.type === 'hero' || section.type === 'cta') && (
@@ -149,14 +243,20 @@ export default function SectionEditor({ section, content, onUpdate, productName 
       {section.type === 'testimonials' && (
         <div>
           {renderField('Headline', 'headline', 'text', 'Social Proof')}
-          <div className="mt-5">
-            <label className="label-mono block mb-4">Testimonials</label>
+          <div style={{ marginTop: 20 }}>
+            <label style={labelStyle}>Testimonials</label>
             {(content.testimonials || []).map((testimonial, index) => (
               <div
                 key={testimonial.id}
-                className="bg-cl-card border border-cl-border rounded-2xl p-4 mb-3"
+                style={{
+                  background: '#111111',
+                  border: '1px solid #2a2a2a',
+                  borderRadius: 16,
+                  padding: 16,
+                  marginBottom: 12,
+                }}
               >
-                <div className="grid grid-cols-2 gap-3 mb-3">
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
                   <input
                     type="text"
                     value={testimonial.name}
@@ -166,7 +266,9 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                       onUpdate({ testimonials: newTestimonials });
                     }}
                     placeholder="Customer Name"
-                    className="input"
+                    style={inputStyle}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
                   />
                   <input
                     type="text"
@@ -177,7 +279,9 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                       onUpdate({ testimonials: newTestimonials });
                     }}
                     placeholder="Role/Title"
-                    className="input"
+                    style={inputStyle}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
                   />
                 </div>
                 <textarea
@@ -188,11 +292,13 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                     onUpdate({ testimonials: newTestimonials });
                   }}
                   placeholder="Testimonial text"
-                  className="textarea w-full mb-3"
+                  style={{ ...textareaStyle, minHeight: 60, marginBottom: 12 }}
                   rows={2}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                 />
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2">
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <input
                       type="number"
                       min="1"
@@ -203,16 +309,24 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                         newTestimonials[index] = { ...testimonial, rating: parseInt(e.target.value) };
                         onUpdate({ testimonials: newTestimonials });
                       }}
-                      className="input w-16"
+                      style={{ ...inputStyle, width: 64 }}
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
                     />
-                    <span className="text-sm text-cl-muted">Stars</span>
+                    <span style={{ fontSize: 14, color: '#86868B' }}>Stars</span>
                   </label>
                   <button
                     onClick={() => {
                       const newTestimonials = (content.testimonials || []).filter((_, i) => i !== index);
                       onUpdate({ testimonials: newTestimonials });
                     }}
-                    className="text-sm text-cl-red hover:text-cl-red/80 transition-colors"
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      fontSize: 14,
+                      color: '#dc2626',
+                      cursor: 'pointer',
+                    }}
                   >
                     Remove
                   </button>
@@ -227,7 +341,19 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                 ];
                 onUpdate({ testimonials: newTestimonials });
               }}
-              className="btn-ghost text-sm"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '8px 16px',
+                border: '1px solid #2a2a2a',
+                background: '#111111',
+                color: '#86868B',
+                borderRadius: 10,
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 13,
+                cursor: 'pointer',
+              }}
             >
               + Add Testimonial
             </button>
@@ -236,21 +362,45 @@ export default function SectionEditor({ section, content, onUpdate, productName 
       )}
 
       {/* Pro Tips */}
-      <div className="section-divider" />
-      <div className="bg-cl-card border border-cl-border rounded-2xl p-4">
-        <div className="flex items-start gap-3">
-          <div className="w-6 h-6 rounded-lg bg-cl-bg border border-cl-border flex items-center justify-center shrink-0 mt-0.5">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-cl-cyan">
+      <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.1), transparent)', margin: '24px 0' }} />
+      <div style={{
+        background: '#111111',
+        border: '1px solid #2a2a2a',
+        borderRadius: 16,
+        padding: 16,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+          <div style={{
+            width: 24,
+            height: 24,
+            borderRadius: 8,
+            background: '#030305',
+            border: '1px solid #2a2a2a',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            marginTop: 2,
+          }}>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ color: '#06B6D4' }}>
               <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1" />
               <line x1="6" y1="3.5" x2="6" y2="6.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
               <circle cx="6" cy="8.5" r="0.5" fill="currentColor" />
             </svg>
           </div>
           <div>
-            <span className="font-mono text-xs text-cl-cyan uppercase tracking-wider block mb-1">
+            <span style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 12,
+              color: '#06B6D4',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              display: 'block',
+              marginBottom: 4,
+            }}>
               Pro Tip
             </span>
-            <p className="text-sm text-cl-muted leading-relaxed">
+            <p style={{ fontSize: 14, color: '#86868B', lineHeight: 1.6, margin: 0 }}>
               {getProTip(section.type)}
             </p>
           </div>

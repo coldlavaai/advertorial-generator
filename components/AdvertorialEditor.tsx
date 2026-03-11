@@ -93,126 +93,263 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
   };
 
   return (
-    <div className="flex-1 flex flex-col h-screen overflow-hidden">
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
       {/* Top Bar */}
-      <div className="px-5 py-3.5 flex items-center justify-between shrink-0 bg-cl-bg border-b border-cl-border">
-        <div className="flex items-center gap-4">
+      <div style={{
+        padding: '14px 20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexShrink: 0,
+        background: '#030305',
+        borderBottom: '1px solid #2a2a2a',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <button
             onClick={onBack}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cl-card border border-cl-border text-cl-muted hover:text-white hover:border-cl-cyan/30 transition-all"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '6px 12px',
+              borderRadius: 8,
+              background: '#111111',
+              border: '1px solid #2a2a2a',
+              color: '#86868B',
+              cursor: 'pointer',
+              transition: 'all 0.15s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.color = '#FFFFFF';
+              e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.color = '#86868B';
+              e.currentTarget.style.borderColor = '#2a2a2a';
+            }}
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M9 3L5 7L9 11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
             </svg>
-            <span className="font-mono text-sm">Back</span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>Back</span>
           </button>
 
-          <div className="h-4 w-px bg-cl-border" />
+          <div style={{ height: 16, width: 1, background: '#2a2a2a' }} />
 
           <div>
-            <h2 className="text-white font-semibold text-base">{template.name}</h2>
-            <div className="flex items-center gap-2 mt-0.5">
+            <h2 style={{ color: '#FFFFFF', fontWeight: 600, fontSize: 16, margin: 0 }}>{template.name}</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 2 }}>
               {saveStatus === 'saved' && (
-                <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-cl-green" />
-                  <span className="font-mono text-xs text-cl-green">SAVED</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }} />
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: '#22c55e' }}>SAVED</span>
                 </div>
               )}
               {saveStatus === 'error' && (
-                <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-cl-red" />
-                  <span className="font-mono text-xs text-cl-red">ERROR</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#dc2626' }} />
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: '#dc2626' }}>ERROR</span>
                 </div>
               )}
               {saveStatus === 'idle' && (
-                <span className="font-mono text-xs text-cl-muted">EDITING</span>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: '#86868B' }}>EDITING</span>
               )}
             </div>
           </div>
         </div>
 
-        <button onClick={handleExport} className="btn-primary">
+        <button
+          onClick={handleExport}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 20px',
+            background: '#06B6D4',
+            border: 'none',
+            color: '#FFFFFF',
+            borderRadius: 10,
+            fontWeight: 600,
+            fontSize: 14,
+            cursor: 'pointer',
+          }}
+        >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M7 2V8M7 2L4.5 4.5M7 2L9.5 4.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M2 8V11C2 11.5523 2.44772 12 3 12H11C11.5523 12 12 11.5523 12 11V8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
-          <span className="font-mono text-sm">Export</span>
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>Export</span>
         </button>
       </div>
 
       {/* Split View */}
-      <div className="flex-1 flex overflow-hidden">
+      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
         {/* Left Panel — Editor */}
-        <div className="w-1/2 overflow-auto border-r border-cl-border">
-          <div className="p-6">
+        <div style={{ width: '50%', overflow: 'auto', borderRight: '1px solid #2a2a2a' }}>
+          <div style={{ padding: 24 }}>
             {/* Metadata Section */}
-            <div className="bg-cl-card border border-cl-border rounded-2xl mb-8 p-5">
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-2 h-2 rounded-full bg-cl-cyan" />
-                <span className="font-mono text-sm text-cl-cyan uppercase tracking-wider">
+            <div style={{
+              background: '#111111',
+              border: '1px solid #2a2a2a',
+              borderRadius: 16,
+              marginBottom: 32,
+              padding: 20,
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#06B6D4' }} />
+                <span style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 14,
+                  color: '#06B6D4',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                }}>
                   Project Settings
                 </span>
               </div>
 
-              <div className="space-y-4">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <div>
-                  <label className="label-mono block mb-2">Product Name</label>
+                  <label style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 12,
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    color: '#86868B',
+                    display: 'block',
+                    marginBottom: 8,
+                  }}>Product Name</label>
                   <input
                     type="text"
                     value={project.metadata.productName}
                     onChange={(e) => handleMetadataUpdate({ productName: e.target.value })}
-                    className="input w-full"
                     placeholder="Enter product name"
+                    style={{
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      background: '#0a0a0a',
+                      border: '1px solid #2a2a2a',
+                      color: '#FFFFFF',
+                      padding: '12px 16px',
+                      borderRadius: 10,
+                      fontSize: 15,
+                      fontFamily: "'Inter', sans-serif",
+                      outline: 'none',
+                    }}
+                    onFocus={e => (e.target.style.borderColor = '#06B6D4')}
+                    onBlur={e => (e.target.style.borderColor = '#2a2a2a')}
                   />
                 </div>
                 <div>
-                  <label className="label-mono block mb-2">Page Title</label>
+                  <label style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 12,
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    color: '#86868B',
+                    display: 'block',
+                    marginBottom: 8,
+                  }}>Page Title</label>
                   <input
                     type="text"
                     value={project.metadata.title}
                     onChange={(e) => handleMetadataUpdate({ title: e.target.value })}
-                    className="input w-full"
                     placeholder="Enter page title"
+                    style={{
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      background: '#0a0a0a',
+                      border: '1px solid #2a2a2a',
+                      color: '#FFFFFF',
+                      padding: '12px 16px',
+                      borderRadius: 10,
+                      fontSize: 15,
+                      fontFamily: "'Inter', sans-serif",
+                      outline: 'none',
+                    }}
+                    onFocus={e => (e.target.style.borderColor = '#06B6D4')}
+                    onBlur={e => (e.target.style.borderColor = '#2a2a2a')}
                   />
                 </div>
                 <div>
-                  <label className="label-mono block mb-2">Meta Description</label>
+                  <label style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 12,
+                    fontWeight: 500,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    color: '#86868B',
+                    display: 'block',
+                    marginBottom: 8,
+                  }}>Meta Description</label>
                   <textarea
                     value={project.metadata.description}
                     onChange={(e) => handleMetadataUpdate({ description: e.target.value })}
-                    className="textarea w-full"
-                    rows={3}
                     placeholder="Enter meta description"
+                    rows={3}
+                    style={{
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      background: '#0a0a0a',
+                      border: '1px solid #2a2a2a',
+                      color: '#FFFFFF',
+                      padding: '12px 16px',
+                      borderRadius: 10,
+                      fontSize: 15,
+                      fontFamily: "'Inter', sans-serif",
+                      outline: 'none',
+                      resize: 'vertical',
+                    }}
+                    onFocus={e => (e.target.style.borderColor = '#06B6D4')}
+                    onBlur={e => (e.target.style.borderColor = '#2a2a2a')}
                   />
                 </div>
               </div>
             </div>
 
-            <div className="section-divider" />
+            {/* Divider */}
+            <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.1), transparent)', margin: '24px 0' }} />
 
             {/* Section Tabs */}
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-2 h-2 rounded-full bg-cl-cyan" />
-                <span className="font-mono text-sm text-cl-cyan uppercase tracking-wider">
+            <div style={{ marginBottom: 24 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#06B6D4' }} />
+                <span style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 14,
+                  color: '#06B6D4',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                }}>
                   Content Sections
                 </span>
               </div>
 
-              <div className="flex flex-wrap gap-1.5">
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {template.sections.map((section, i) => {
                   const isActive = activeSection === section.id;
                   return (
                     <button
                       key={section.id}
                       onClick={() => setActiveSection(section.id)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-mono text-sm transition-all ${
-                        isActive
-                          ? 'bg-cl-card border border-cl-cyan/30 text-cl-cyan'
-                          : 'bg-cl-card border border-cl-border text-cl-muted hover:text-white'
-                      }`}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        padding: '6px 12px',
+                        borderRadius: 8,
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: 13,
+                        background: '#111111',
+                        border: isActive ? '1px solid rgba(6,182,212,0.3)' : '1px solid #2a2a2a',
+                        color: isActive ? '#06B6D4' : '#86868B',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s',
+                      }}
                     >
-                      <span className="text-xs text-cl-muted">
+                      <span style={{ fontSize: 12, color: '#86868B' }}>
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       {section.type.charAt(0).toUpperCase() + section.type.slice(1)}
@@ -235,16 +372,30 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
         </div>
 
         {/* Right Panel — Preview */}
-        <div className="w-1/2 overflow-auto bg-cl-bg">
-          <div className="sticky top-0 z-10 px-5 py-3 bg-cl-bg/95 backdrop-blur-sm border-b border-cl-border">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-cl-green animate-pulse" />
-              <span className="font-mono text-sm text-cl-muted uppercase tracking-wider">
+        <div style={{ width: '50%', overflow: 'auto', background: '#030305' }}>
+          <div style={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 10,
+            padding: '12px 20px',
+            background: 'rgba(3,3,5,0.95)',
+            backdropFilter: 'blur(8px)',
+            borderBottom: '1px solid #2a2a2a',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e' }} />
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 13,
+                color: '#86868B',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+              }}>
                 Live Preview
               </span>
             </div>
           </div>
-          <div className="p-5">
+          <div style={{ padding: 20 }}>
             <AdvertorialPreview project={project} />
           </div>
         </div>

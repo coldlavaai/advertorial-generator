@@ -13,7 +13,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-cl-bg antialiased">
+      <body style={{
+        margin: 0,
+        padding: 0,
+        minHeight: '100vh',
+        background: '#030305',
+        color: '#FFFFFF',
+        fontFamily: "'Inter', sans-serif",
+        WebkitFontSmoothing: 'antialiased',
+      }}>
         {children}
       </body>
     </html>

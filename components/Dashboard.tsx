@@ -64,63 +64,103 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   ];
 
   return (
-    <div className="flex-1 overflow-auto">
-      <div className="max-w-[960px] mx-auto px-8 py-10">
+    <div style={{ flex: 1, overflow: 'auto' }}>
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '40px 32px' }}>
         {/* Header */}
-        <div className="mb-10 fade-in">
-          <span className="text-cl-muted text-sm font-mono mb-4 block">OVERVIEW</span>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
+        <div style={{ marginBottom: 40 }}>
+          <span style={{
+            color: '#86868B',
+            fontSize: 14,
+            fontFamily: "'JetBrains Mono', monospace",
+            display: 'block',
+            marginBottom: 16,
+          }}>OVERVIEW</span>
+          <h1 style={{ fontSize: 40, fontWeight: 700, color: '#FFFFFF', marginBottom: 8, lineHeight: 1.1 }}>
             Dashboard
           </h1>
-          <p className="text-lg text-cl-muted">
+          <p style={{ fontSize: 18, color: '#86868B', lineHeight: 1.6 }}>
             Create high-converting advertorials in minutes.
           </p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 fade-in fade-in-delay-1">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 40 }}>
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="bg-cl-card border border-cl-border rounded-2xl p-6 hover:border-cl-cyan/20 transition-colors"
+              style={{
+                background: '#111111',
+                border: '1px solid #2a2a2a',
+                borderRadius: 16,
+                padding: 24,
+                transition: 'border-color 0.2s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = '#2a2a2a')}
             >
-              <div className="flex items-start justify-between mb-5">
-                <span className="text-cl-muted">{stat.icon}</span>
-                <span className="stat-value">{stat.value}</span>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
+                <span style={{ color: '#86868B' }}>{stat.icon}</span>
+                <span style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 28,
+                  fontWeight: 700,
+                  color: '#06B6D4',
+                }}>{stat.value}</span>
               </div>
               <div>
-                <div className="font-semibold text-white text-sm">{stat.label}</div>
-                <div className="text-cl-muted text-xs mt-0.5">{stat.sublabel}</div>
+                <div style={{ fontWeight: 600, color: '#FFFFFF', fontSize: 14 }}>{stat.label}</div>
+                <div style={{ color: '#86868B', fontSize: 13, marginTop: 2 }}>{stat.sublabel}</div>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="section-divider" />
+        {/* Divider */}
+        <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.1), transparent)', margin: '32px 0' }} />
 
         {/* Quick Actions */}
-        <div className="mb-10 fade-in fade-in-delay-2">
-          <span className="text-cl-muted text-sm font-mono mb-6 block">QUICK ACTIONS</span>
+        <div style={{ marginBottom: 40 }}>
+          <span style={{
+            color: '#86868B',
+            fontSize: 14,
+            fontFamily: "'JetBrains Mono', monospace",
+            display: 'block',
+            marginBottom: 24,
+          }}>QUICK ACTIONS</span>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             <button
               onClick={() => onNavigate('templates')}
-              className="bg-cl-card border border-cl-border rounded-2xl p-5 text-left hover:border-cl-cyan/30 transition-colors group"
+              style={{
+                background: '#111111',
+                border: '1px solid #2a2a2a',
+                borderRadius: 16,
+                padding: 20,
+                textAlign: 'left',
+                cursor: 'pointer',
+                transition: 'border-color 0.2s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = '#2a2a2a')}
             >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-cl-bg border border-cl-border flex items-center justify-center shrink-0">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-cl-cyan">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <div style={{
+                  width: 40, height: 40, borderRadius: 12,
+                  background: '#030305', border: '1px solid #2a2a2a',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                }}>
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ color: '#06B6D4' }}>
                     <rect x="2" y="1" width="14" height="16" rx="2" stroke="currentColor" strokeWidth="1.2" />
                     <line x1="5.5" y1="5.5" x2="12.5" y2="5.5" stroke="currentColor" strokeWidth="1.2" />
                     <line x1="5.5" y1="9" x2="12.5" y2="9" stroke="currentColor" strokeWidth="1.2" />
                     <line x1="5.5" y1="12.5" x2="10" y2="12.5" stroke="currentColor" strokeWidth="1.2" />
                   </svg>
                 </div>
-                <div>
-                  <div className="text-white font-semibold text-base mb-0.5">Browse Templates</div>
-                  <div className="text-cl-muted text-sm">3 professional templates</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ color: '#FFFFFF', fontWeight: 600, fontSize: 16, marginBottom: 2 }}>Browse Templates</div>
+                  <div style={{ color: '#86868B', fontSize: 14 }}>3 professional templates</div>
                 </div>
-                <svg className="ml-auto text-cl-muted group-hover:text-cl-cyan transition-colors" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ color: '#86868B' }}>
                   <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
                 </svg>
               </div>
@@ -128,19 +168,33 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
 
             <button
               onClick={() => onNavigate('editor')}
-              className="bg-cl-card border border-cl-border rounded-2xl p-5 text-left hover:border-cl-cyan/30 transition-colors group"
+              style={{
+                background: '#111111',
+                border: '1px solid #2a2a2a',
+                borderRadius: 16,
+                padding: 20,
+                textAlign: 'left',
+                cursor: 'pointer',
+                transition: 'border-color 0.2s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)')}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = '#2a2a2a')}
             >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-cl-bg border border-cl-border flex items-center justify-center shrink-0">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-cl-cyan">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <div style={{
+                  width: 40, height: 40, borderRadius: 12,
+                  background: '#030305', border: '1px solid #2a2a2a',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                }}>
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ color: '#06B6D4' }}>
                     <path d="M13 2L16 5L6.5 14.5H3.5V11.5L13 2Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
                   </svg>
                 </div>
-                <div>
-                  <div className="text-white font-semibold text-base mb-0.5">Create New</div>
-                  <div className="text-cl-muted text-sm">Start from a template</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ color: '#FFFFFF', fontWeight: 600, fontSize: 16, marginBottom: 2 }}>Create New</div>
+                  <div style={{ color: '#86868B', fontSize: 14 }}>Start from a template</div>
                 </div>
-                <svg className="ml-auto text-cl-muted group-hover:text-cl-cyan transition-colors" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ color: '#86868B' }}>
                   <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
                 </svg>
               </div>
@@ -148,48 +202,91 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
           </div>
         </div>
 
-        <div className="section-divider" />
+        {/* Divider */}
+        <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.1), transparent)', margin: '32px 0' }} />
 
         {/* Available Templates */}
-        <div className="mb-10 fade-in fade-in-delay-3">
-          <span className="text-cl-muted text-sm font-mono mb-6 block">TEMPLATES</span>
+        <div style={{ marginBottom: 40 }}>
+          <span style={{
+            color: '#86868B',
+            fontSize: 14,
+            fontFamily: "'JetBrains Mono', monospace",
+            display: 'block',
+            marginBottom: 24,
+          }}>TEMPLATES</span>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
             {templates.map((template) => (
               <button
                 key={template.id}
                 onClick={() => onNavigate('templates')}
-                className="bg-cl-card border border-cl-border rounded-2xl p-5 text-left hover:border-cl-cyan/30 transition-colors group"
+                style={{
+                  background: '#111111',
+                  border: '1px solid #2a2a2a',
+                  borderRadius: 16,
+                  padding: 20,
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  transition: 'border-color 0.2s',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(6,182,212,0.3)')}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = '#2a2a2a')}
               >
-                <div className="pill mb-4">{template.category}</div>
-                <h3 className="text-white font-semibold text-base mb-2 group-hover:text-cl-cyan transition-colors">
+                <span style={{
+                  display: 'inline-block',
+                  background: '#1a1a1a',
+                  border: '1px solid #2a2a2a',
+                  padding: '6px 12px',
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 12,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  color: '#06B6D4',
+                  borderRadius: 6,
+                  marginBottom: 16,
+                }}>
+                  {template.category}
+                </span>
+                <h3 style={{ color: '#FFFFFF', fontWeight: 600, fontSize: 16, marginBottom: 8 }}>
                   {template.name}
                 </h3>
-                <p className="text-cl-muted text-sm mb-5 leading-relaxed">
+                <p style={{ color: '#86868B', fontSize: 14, marginBottom: 20, lineHeight: 1.6 }}>
                   {template.description}
                 </p>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-sm text-cl-cyan">Use Template</span>
-                  <span className="text-cl-cyan">→</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, color: '#06B6D4' }}>Use Template</span>
+                  <span style={{ color: '#06B6D4' }}>→</span>
                 </div>
               </button>
             ))}
           </div>
         </div>
 
-        <div className="section-divider" />
+        {/* Divider */}
+        <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.1), transparent)', margin: '32px 0' }} />
 
         {/* Getting Started */}
-        <div className="fade-in fade-in-delay-4 mb-10">
-          <div className="bg-cl-card border border-cl-border rounded-2xl p-6">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-2 h-2 rounded-full bg-cl-cyan" />
-              <span className="font-mono text-sm text-cl-cyan uppercase tracking-wider">
+        <div style={{ marginBottom: 40 }}>
+          <div style={{
+            background: '#111111',
+            border: '1px solid #2a2a2a',
+            borderRadius: 16,
+            padding: 24,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#06B6D4' }} />
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 14,
+                color: '#06B6D4',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+              }}>
                 Getting Started
               </span>
             </div>
 
-            <div className="space-y-0">
+            <div>
               {[
                 'Choose a template that matches your product type',
                 'Customize the content with your product details & benefits',
@@ -198,13 +295,24 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
               ].map((step, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-4 py-3"
-                  style={{ borderBottom: i < 3 ? '1px solid #1a1a1a' : 'none' }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 16,
+                    padding: '12px 0',
+                    borderBottom: i < 3 ? '1px solid #1a1a1a' : 'none',
+                  }}
                 >
-                  <span className="font-mono text-sm font-medium text-cl-cyan mt-0.5">
+                  <span style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: '#06B6D4',
+                    marginTop: 2,
+                  }}>
                     0{i + 1}
                   </span>
-                  <p className="text-cl-muted text-base leading-relaxed">
+                  <p style={{ color: '#E5E7EB', fontSize: 15, lineHeight: 1.6, margin: 0 }}>
                     {step}
                   </p>
                 </div>

@@ -26,20 +26,34 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
     switch (section.type) {
       case 'hero':
         return (
-          <section className="py-20 bg-gradient-to-br from-cyan-500 to-cyan-600 text-white text-center">
-            <div className="container mx-auto px-6">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+          <section style={{
+            padding: '80px 24px',
+            background: 'linear-gradient(135deg, #06B6D4, #0891b2)',
+            color: '#FFFFFF',
+            textAlign: 'center',
+          }}>
+            <div style={{ maxWidth: 800, margin: '0 auto' }}>
+              <h1 style={{ fontSize: 48, fontWeight: 700, marginBottom: 24, lineHeight: 1.1 }}>
                 {replacePlaceholders(content.headline || '')}
               </h1>
-              <p className="text-2xl mb-4 text-white/90">
+              <p style={{ fontSize: 22, marginBottom: 16, opacity: 0.9 }}>
                 {replacePlaceholders(content.subheadline || '')}
               </p>
-              <p className="text-lg mb-8 text-white/80">
+              <p style={{ fontSize: 18, marginBottom: 32, opacity: 0.8 }}>
                 {replacePlaceholders(content.body || '')}
               </p>
               <a
                 href={content.ctaUrl || '#'}
-                className="inline-block bg-white text-cyan-600 px-10 py-4 rounded-lg text-lg font-bold hover:bg-gray-100 transition-colors"
+                style={{
+                  display: 'inline-block',
+                  background: '#FFFFFF',
+                  color: '#0891b2',
+                  padding: '16px 40px',
+                  borderRadius: 10,
+                  fontSize: 18,
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                }}
               >
                 {content.ctaText || 'Get Started'}
               </a>
@@ -49,19 +63,26 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
 
       case 'problem':
         return (
-          <section className="py-16 bg-gray-50">
-            <div className="container mx-auto px-6 max-w-4xl">
-              <h2 className="text-4xl font-bold mb-6 text-gray-900">
+          <section style={{ padding: '64px 24px', background: '#f8f9fa' }}>
+            <div style={{ maxWidth: 800, margin: '0 auto' }}>
+              <h2 style={{ fontSize: 36, fontWeight: 700, marginBottom: 24, color: '#111827' }}>
                 {replacePlaceholders(content.headline || '')}
               </h2>
-              <p className="text-xl mb-8 text-gray-700">
+              <p style={{ fontSize: 20, marginBottom: 32, color: '#4b5563', lineHeight: 1.6 }}>
                 {replacePlaceholders(content.body || '')}
               </p>
               {content.bulletPoints && content.bulletPoints.length > 0 && (
-                <ul className="space-y-4">
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                   {content.bulletPoints.map((point, index) => (
-                    <li key={index} className="flex items-start gap-3 text-lg text-gray-700">
-                      <span className="text-cyan-500 text-2xl">→</span>
+                    <li key={index} style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: 12,
+                      fontSize: 18,
+                      color: '#4b5563',
+                      padding: '8px 0',
+                    }}>
+                      <span style={{ color: '#06B6D4', fontSize: 22 }}>→</span>
                       <span>{replacePlaceholders(point)}</span>
                     </li>
                   ))}
@@ -73,15 +94,15 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
 
       case 'solution':
         return (
-          <section className="py-16 bg-white">
-            <div className="container mx-auto px-6 max-w-4xl">
-              <h2 className="text-4xl font-bold mb-4 text-gray-900">
+          <section style={{ padding: '64px 24px', background: '#FFFFFF' }}>
+            <div style={{ maxWidth: 800, margin: '0 auto' }}>
+              <h2 style={{ fontSize: 36, fontWeight: 700, marginBottom: 16, color: '#111827' }}>
                 {replacePlaceholders(content.headline || '')}
               </h2>
-              <h3 className="text-2xl text-cyan-600 mb-6 font-normal">
+              <h3 style={{ fontSize: 24, color: '#0891b2', marginBottom: 24, fontWeight: 400 }}>
                 {replacePlaceholders(content.subheadline || '')}
               </h3>
-              <p className="text-xl text-gray-700 leading-relaxed">
+              <p style={{ fontSize: 20, color: '#4b5563', lineHeight: 1.7 }}>
                 {replacePlaceholders(content.body || '')}
               </p>
             </div>
@@ -90,23 +111,38 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
 
       case 'features':
         return (
-          <section className="py-16 bg-gray-50">
-            <div className="container mx-auto px-6 max-w-4xl">
-              <h2 className="text-4xl font-bold mb-10 text-gray-900 text-center">
+          <section style={{ padding: '64px 24px', background: '#f8f9fa' }}>
+            <div style={{ maxWidth: 800, margin: '0 auto' }}>
+              <h2 style={{ fontSize: 36, fontWeight: 700, marginBottom: 40, color: '#111827', textAlign: 'center' }}>
                 {replacePlaceholders(content.headline || '')}
               </h2>
               {content.bulletPoints && content.bulletPoints.length > 0 && (
-                <div className="grid md:grid-cols-2 gap-6">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
                   {content.bulletPoints.map((point, index) => (
                     <div
                       key={index}
-                      className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:border-cyan-300 transition-colors"
+                      style={{
+                        background: '#FFFFFF',
+                        padding: 24,
+                        borderRadius: 10,
+                        border: '1px solid #e5e7eb',
+                      }}
                     >
-                      <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                          <span className="text-cyan-600 font-bold">✓</span>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                        <div style={{
+                          width: 32,
+                          height: 32,
+                          background: '#ecfeff',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                          marginTop: 2,
+                        }}>
+                          <span style={{ color: '#0891b2', fontWeight: 700 }}>✓</span>
                         </div>
-                        <p className="text-gray-800 text-lg">{replacePlaceholders(point)}</p>
+                        <p style={{ color: '#374151', fontSize: 17, margin: 0, lineHeight: 1.5 }}>{replacePlaceholders(point)}</p>
                       </div>
                     </div>
                   ))}
@@ -118,31 +154,36 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
 
       case 'testimonials':
         return (
-          <section className="py-16 bg-white">
-            <div className="container mx-auto px-6 max-w-6xl">
-              <h2 className="text-4xl font-bold mb-12 text-gray-900 text-center">
+          <section style={{ padding: '64px 24px', background: '#FFFFFF' }}>
+            <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+              <h2 style={{ fontSize: 36, fontWeight: 700, marginBottom: 48, color: '#111827', textAlign: 'center' }}>
                 {content.headline || ''}
               </h2>
               {content.testimonials && content.testimonials.length > 0 && (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
                   {content.testimonials.map((testimonial) => (
                     <div
                       key={testimonial.id}
-                      className="bg-gray-50 p-8 rounded-lg shadow-sm border border-gray-200"
+                      style={{
+                        background: '#f8f9fa',
+                        padding: 32,
+                        borderRadius: 10,
+                        border: '1px solid #e5e7eb',
+                      }}
                     >
                       {testimonial.rating && (
-                        <div className="flex gap-1 mb-4">
+                        <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
                           {Array.from({ length: testimonial.rating }).map((_, i) => (
-                            <span key={i} className="text-yellow-400 text-xl">★</span>
+                            <span key={i} style={{ color: '#f59e0b', fontSize: 20 }}>★</span>
                           ))}
                         </div>
                       )}
-                      <p className="text-gray-700 italic mb-6 leading-relaxed">
+                      <p style={{ color: '#4b5563', fontStyle: 'italic', marginBottom: 24, lineHeight: 1.6, fontSize: 16 }}>
                         &ldquo;{testimonial.content}&rdquo;
                       </p>
-                      <div className="border-t border-gray-200 pt-4">
-                        <p className="font-bold text-gray-900">{testimonial.name}</p>
-                        <p className="text-sm text-gray-600">{testimonial.role}</p>
+                      <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: 16 }}>
+                        <p style={{ fontWeight: 700, color: '#111827', margin: 0, fontSize: 15 }}>{testimonial.name}</p>
+                        <p style={{ fontSize: 14, color: '#6b7280', margin: '4px 0 0' }}>{testimonial.role}</p>
                       </div>
                     </div>
                   ))}
@@ -154,15 +195,24 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
 
       case 'guarantee':
         return (
-          <section className="py-16 bg-cyan-50 text-center">
-            <div className="container mx-auto px-6 max-w-4xl">
-              <div className="inline-flex w-20 h-20 bg-cyan-500 rounded-full items-center justify-center mb-6">
-                <span className="text-white text-4xl">✓</span>
+          <section style={{ padding: '64px 24px', background: '#ecfeff', textAlign: 'center' }}>
+            <div style={{ maxWidth: 800, margin: '0 auto' }}>
+              <div style={{
+                display: 'inline-flex',
+                width: 80,
+                height: 80,
+                background: '#06B6D4',
+                borderRadius: '50%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 24,
+              }}>
+                <span style={{ color: '#FFFFFF', fontSize: 40 }}>✓</span>
               </div>
-              <h2 className="text-4xl font-bold mb-6 text-gray-900">
+              <h2 style={{ fontSize: 36, fontWeight: 700, marginBottom: 24, color: '#111827' }}>
                 {content.headline || ''}
               </h2>
-              <p className="text-xl text-gray-700 leading-relaxed">
+              <p style={{ fontSize: 20, color: '#4b5563', lineHeight: 1.6 }}>
                 {replacePlaceholders(content.body || '')}
               </p>
             </div>
@@ -171,21 +221,36 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
 
       case 'cta':
         return (
-          <section className="py-20 bg-gradient-to-br from-cyan-500 to-cyan-600 text-white text-center">
-            <div className="container mx-auto px-6">
-              <h2 className="text-5xl font-bold mb-4">
+          <section style={{
+            padding: '80px 24px',
+            background: 'linear-gradient(135deg, #06B6D4, #0891b2)',
+            color: '#FFFFFF',
+            textAlign: 'center',
+          }}>
+            <div style={{ maxWidth: 800, margin: '0 auto' }}>
+              <h2 style={{ fontSize: 42, fontWeight: 700, marginBottom: 16 }}>
                 {replacePlaceholders(content.headline || '')}
               </h2>
-              <p className="text-2xl mb-8 text-white/90">
+              <p style={{ fontSize: 22, marginBottom: 32, opacity: 0.9 }}>
                 {replacePlaceholders(content.subheadline || '')}
               </p>
               <a
                 href={content.ctaUrl || '#'}
-                className="inline-block bg-white text-cyan-600 px-12 py-5 rounded-lg text-xl font-bold hover:bg-gray-100 transition-colors mb-6"
+                style={{
+                  display: 'inline-block',
+                  background: '#FFFFFF',
+                  color: '#0891b2',
+                  padding: '20px 48px',
+                  borderRadius: 10,
+                  fontSize: 20,
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  marginBottom: 24,
+                }}
               >
                 {content.ctaText || 'Get Started'}
               </a>
-              <p className="text-white/80">
+              <p style={{ opacity: 0.8, fontSize: 16 }}>
                 {replacePlaceholders(content.body || '')}
               </p>
             </div>
@@ -200,32 +265,65 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
   return (
     <div>
       {/* Preview Toolbar */}
-      <div className="bg-cl-card border border-cl-border rounded-2xl mb-4 p-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-cl-green" />
-          <span className="font-mono text-sm text-cl-muted uppercase tracking-wider">
+      <div style={{
+        background: '#111111',
+        border: '1px solid #2a2a2a',
+        borderRadius: 16,
+        marginBottom: 16,
+        padding: 12,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e' }} />
+          <span style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: 13,
+            color: '#86868B',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+          }}>
             Preview
           </span>
         </div>
 
-        <div className="flex items-center gap-0.5 p-0.5 rounded-lg bg-cl-bg border border-cl-border">
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          padding: 2,
+          borderRadius: 8,
+          background: '#030305',
+          border: '1px solid #2a2a2a',
+        }}>
           <button
             onClick={() => setViewMode('desktop')}
-            className={`px-3 py-1 rounded-md font-mono text-xs transition-all ${
-              viewMode === 'desktop'
-                ? 'bg-cl-card border border-cl-cyan/20 text-cl-cyan'
-                : 'text-cl-muted border border-transparent'
-            }`}
+            style={{
+              padding: '4px 12px',
+              borderRadius: 6,
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 12,
+              border: viewMode === 'desktop' ? '1px solid rgba(6,182,212,0.2)' : '1px solid transparent',
+              background: viewMode === 'desktop' ? '#111111' : 'transparent',
+              color: viewMode === 'desktop' ? '#06B6D4' : '#86868B',
+              cursor: 'pointer',
+            }}
           >
             Desktop
           </button>
           <button
             onClick={() => setViewMode('mobile')}
-            className={`px-3 py-1 rounded-md font-mono text-xs transition-all ${
-              viewMode === 'mobile'
-                ? 'bg-cl-card border border-cl-cyan/20 text-cl-cyan'
-                : 'text-cl-muted border border-transparent'
-            }`}
+            style={{
+              padding: '4px 12px',
+              borderRadius: 6,
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 12,
+              border: viewMode === 'mobile' ? '1px solid rgba(6,182,212,0.2)' : '1px solid transparent',
+              background: viewMode === 'mobile' ? '#111111' : 'transparent',
+              color: viewMode === 'mobile' ? '#06B6D4' : '#86868B',
+              cursor: 'pointer',
+            }}
           >
             Mobile
           </button>
@@ -234,22 +332,44 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
 
       {/* Preview Content */}
       <div
-        className={`bg-white shadow-2xl transition-all duration-300 rounded-xl overflow-hidden ${
-          viewMode === 'mobile' ? 'max-w-[375px] mx-auto' : 'max-w-full'
-        }`}
-        style={{ border: '1px solid #1a1a1a' }}
+        style={{
+          background: '#FFFFFF',
+          borderRadius: 12,
+          overflow: 'hidden',
+          border: '1px solid #2a2a2a',
+          maxWidth: viewMode === 'mobile' ? 375 : '100%',
+          margin: viewMode === 'mobile' ? '0 auto' : undefined,
+          transition: 'max-width 0.3s ease',
+        }}
       >
         {template.sections.map((section) => (
           <div key={section.id}>{renderSection(section.id)}</div>
         ))}
 
         {/* Footer */}
-        <footer className="bg-gray-900 text-white py-10 text-center">
-          <div className="flex items-center justify-center gap-2">
-            <span className="font-mono text-xs tracking-widest uppercase text-gray-500">
+        <footer style={{
+          background: '#111827',
+          color: '#FFFFFF',
+          padding: '40px 24px',
+          textAlign: 'center',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
+            <span style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 10,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.3)',
+            }}>
               Powered by
             </span>
-            <span className="font-mono text-sm font-bold tracking-wider text-cl-cyan">
+            <span style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '0.1em',
+              color: '#06B6D4',
+            }}>
               COLD LAVA
             </span>
           </div>
