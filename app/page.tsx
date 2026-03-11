@@ -1,13 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import TemplateSelector from '@/components/TemplateSelector';
 import AdvertorialEditor from '@/components/AdvertorialEditor';
 import PoweredBy from '@/components/PoweredBy';
 import { AdvertorialTemplate } from '@/types/advertorial';
 
 export default function Home() {
+  const router = useRouter();
   const [selectedTemplate, setSelectedTemplate] = useState<AdvertorialTemplate | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Check authentication
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      router.push('/auth');
+    } else {
+      setIsAuthenticated(true);
+    }
+    setIsLoading(false);
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth_token');
+    router.push('/auth');
+  };
+
+  if (isLoading || !isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-cl-bg">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -23,14 +51,22 @@ export default function Home() {
                 Cold Lava Tools
               </p>
             </div>
-            {selectedTemplate && (
+            <div className="flex items-center gap-4">
+              {selectedTemplate && (
+                <button
+                  onClick={() => setSelectedTemplate(null)}
+                  className="px-4 py-2 bg-transparent hover:bg-white/5 text-white/60 hover:text-white font-medium rounded-lg transition-all duration-200 text-sm"
+                >
+                  ← Back to Templates
+                </button>
+              )}
               <button
-                onClick={() => setSelectedTemplate(null)}
-                className="btn-ghost text-sm"
+                onClick={handleLogout}
+                className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white border border-white/20 font-medium rounded-lg transition-all duration-200 text-sm"
               >
-                ← Back to Templates
+                Logout
               </button>
-            )}
+            </div>
           </div>
         </div>
       </header>
