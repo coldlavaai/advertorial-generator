@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import Sidebar from '@/components/Sidebar';
 import Dashboard from '@/components/Dashboard';
 import TemplateSelector from '@/components/TemplateSelector';
@@ -9,45 +8,18 @@ import AdvertorialEditor from '@/components/AdvertorialEditor';
 import { AdvertorialTemplate } from '@/types/advertorial';
 
 export default function Home() {
-  const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedTemplate, setSelectedTemplate] = useState<AdvertorialTemplate | null>(null);
 
-  useEffect(() => {
-    // Check authentication
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      router.push('/auth');
-    } else {
-      setIsAuthenticated(true);
-    }
-    setIsLoading(false);
-  }, [router]);
-
   const handleNavigate = (view: string) => {
     setCurrentView(view);
-    setSelectedTemplate(null); // Reset template when changing views
+    setSelectedTemplate(null);
   };
 
   const handleSelectTemplate = (template: AdvertorialTemplate) => {
     setSelectedTemplate(template);
     setCurrentView('editor');
   };
-
-  if (isLoading || !isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-cl-bg">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-lg gradient-border flex items-center justify-center">
-            <span className="text-white font-bold text-xl">CL</span>
-          </div>
-          <div className="text-white font-mono">Loading...</div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex bg-cl-bg">

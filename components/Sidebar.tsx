@@ -1,20 +1,11 @@
 'use client';
 
-import { useRouter, usePathname } from 'next/navigation';
-
 interface SidebarProps {
   onNavigate: (view: string) => void;
   currentView: string;
 }
 
 export default function Sidebar({ onNavigate, currentView }: SidebarProps) {
-  const router = useRouter();
-
-  const handleLogout = () => {
-    localStorage.removeItem('auth_token');
-    router.push('/auth');
-  };
-
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊' },
     { id: 'templates', label: 'Templates', icon: '📄' },
@@ -56,15 +47,8 @@ export default function Sidebar({ onNavigate, currentView }: SidebarProps) {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-cl-border space-y-2">
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-cl-muted hover:bg-cl-bg hover:text-white transition-all"
-        >
-          <span className="text-xl">🚪</span>
-          <span className="font-medium">Logout</span>
-        </button>
-        <div className="text-center text-xs text-cl-muted font-mono pt-2">
+      <div className="p-4 border-t border-cl-border">
+        <div className="text-center text-xs text-cl-muted font-mono">
           v1.0.0
         </div>
       </div>
