@@ -9,75 +9,65 @@ interface TemplateSelectorProps {
 
 export default function TemplateSelector({ onSelectTemplate }: TemplateSelectorProps) {
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Section Label */}
-      <div className="flex items-center gap-8 mb-6 fade-in">
-        <div className="w-8 h-px bg-cyan-500/40" />
-        <span className="section-label">Select Template</span>
+    <div className="max-w-6xl mx-auto">
+      {/* Heading */}
+      <div className="mb-8 fade-in">
+        <h1 className="text-4xl font-bold text-white mb-2">Templates</h1>
+        <p className="text-cl-muted">
+          Choose a proven template optimized for conversions. Each template follows best practices
+          for persuasive copywriting and user engagement.
+        </p>
       </div>
 
-      {/* Heading */}
-      <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 tracking-tight fade-in fade-in-delay-1">
-        Choose Your <span className="font-light text-white/35">Template</span>
-      </h2>
-      
-      <p className="text-lg text-white/60 mb-12 max-w-2xl fade-in fade-in-delay-2">
-        Select a proven template optimized for conversions. Each template follows best practices
-        for persuasive copywriting and user engagement.
-      </p>
-
       {/* Template Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {templates.map((template, index) => (
           <button
             key={template.id}
             onClick={() => onSelectTemplate(template)}
-            className={`corner-brackets card p-8 text-left hover:bg-cyan-500/5 hover:border-cyan-500/40 transition-all duration-300 group fade-in`}
-            style={{ animationDelay: `${(index + 3) * 0.1}s`, opacity: 0 }}
+            className={`p-6 rounded-xl border border-cl-border bg-cl-card hover:border-cl-cyan hover:bg-cl-card/80 transition-all text-left group fade-in fade-in-delay-${index + 1}`}
           >
             {/* Template Icon/Category */}
-            <div className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-4">
-              <span className="text-xs font-mono uppercase tracking-wider text-cyan-400/70">
+            <div className="inline-block px-3 py-1 rounded-full bg-cl-cyan/10 border border-cl-cyan/20 mb-4">
+              <span className="text-xs font-mono uppercase tracking-wider text-cl-cyan">
                 {template.category}
               </span>
             </div>
 
             {/* Template Name */}
-            <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">
+            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cl-cyan transition-colors">
               {template.name}
             </h3>
 
             {/* Template Description */}
-            <p className="text-white/60 text-sm leading-relaxed mb-6">
+            <p className="text-cl-muted text-sm leading-relaxed mb-6">
               {template.description}
             </p>
 
             {/* Features List */}
             <ul className="space-y-2 mb-6">
               {template.features.map((feature, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-white/50">
-                  <span className="text-cyan-400/60 mt-1">→</span>
+                <li key={i} className="flex items-start gap-2 text-sm text-cl-muted">
+                  <span className="text-cl-cyan mt-1">→</span>
                   <span>{feature}</span>
                 </li>
               ))}
             </ul>
 
             {/* CTA */}
-            <div className="flex items-center gap-2 text-cyan-400 font-mono text-xs uppercase tracking-wider group-hover:gap-3 transition-all">
+            <div className="flex items-center gap-2 text-cl-cyan font-medium text-sm group-hover:gap-3 transition-all">
               <span>Use Template</span>
-              <span className="text-cyan-400/60">→</span>
+              <span>→</span>
             </div>
           </button>
         ))}
       </div>
 
       {/* Info Section */}
-      <div className="section-divider" />
-
-      <div className="corner-brackets-lg card-surface p-8 max-w-4xl mx-auto">
+      <div className="p-6 rounded-xl border border-cl-cyan/30 bg-cl-cyan/5 fade-in fade-in-delay-4">
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-2 h-2 rounded-full bg-cyan-400/60" />
-          <h3 className="font-mono text-sm uppercase tracking-wider text-cyan-400/60">
+          <div className="w-2 h-2 rounded-full bg-cl-cyan" />
+          <h3 className="font-mono text-sm uppercase tracking-wider text-cl-cyan">
             What You Get
           </h3>
         </div>
@@ -88,11 +78,13 @@ export default function TemplateSelector({ onSelectTemplate }: TemplateSelectorP
             'Live preview mode',
             'Mobile-responsive design',
             'Export to HTML',
-            'Save & load projects',
+            'AI suggestions',
             'SEO meta tags included',
           ].map((feature, i) => (
-            <li key={i} className="flex items-center gap-3 text-white/70">
-              <div className="w-1 h-1 rounded-full bg-cyan-500/40" />
+            <li key={i} className="flex items-center gap-3 text-cl-muted">
+              <svg className="w-4 h-4 text-cl-green" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
               <span>{feature}</span>
             </li>
           ))}
