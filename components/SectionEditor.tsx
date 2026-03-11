@@ -5,209 +5,281 @@ import { AdvertorialSection, SectionContent } from '@/types/advertorial';
 interface SectionEditorProps {
   section: AdvertorialSection;
   content: SectionContent;
-  onUpdate: (updates: Partial<SectionContent>) => void;
+  onUpdate: (content: Partial<SectionContent>) => void;
+  productName: string;
 }
 
-export default function SectionEditor({ section, content, onUpdate }: SectionEditorProps) {
-  const updateBulletPoint = (index: number, value: string) => {
-    const newBulletPoints = [...(content.bulletPoints || [])];
-    newBulletPoints[index] = value;
-    onUpdate({ bulletPoints: newBulletPoints });
+export default function SectionEditor({ section, content, onUpdate, productName }: SectionEditorProps) {
+  const renderField = (
+    label: string,
+    field: keyof SectionContent,
+    type: 'text' | 'textarea' | 'url' = 'text',
+    placeholder?: string
+  ) => {
+    const value = (content[field] as string) || '';
+
+    return (
+      <div className="mb-6">
+        <label className="block font-mono text-xs uppercase tracking-wider text-cyan-400/60 mb-2">
+          {label}
+        </label>
+        {type === 'textarea' ? (
+          <textarea
+            value={value}
+            onChange={(e) => onUpdate({ [field]: e.target.value })}
+            placeholder={placeholder || `Enter ${label.toLowerCase()}...`}
+            className="textarea w-full min-h-[120px]"
+            rows={4}
+          />
+        ) : (
+          <input
+            type={type}
+            value={value}
+            onChange={(e) => onUpdate({ [field]: e.target.value })}
+            placeholder={placeholder || `Enter ${label.toLowerCase()}...`}
+            className="input w-full"
+          />
+        )}
+        <p className="text-xs text-white/30 mt-1">
+          Use [Product Name] as a placeholder for "{productName}"
+        </p>
+      </div>
+    );
   };
 
-  const addBulletPoint = () => {
-    onUpdate({
-      bulletPoints: [...(content.bulletPoints || []), 'New bullet point'],
-    });
-  };
+  const renderBulletPoints = () => {
+    const points = content.bulletPoints || [];
 
-  const removeBulletPoint = (index: number) => {
-    const newBulletPoints = content.bulletPoints?.filter((_, i) => i !== index);
-    onUpdate({ bulletPoints: newBulletPoints });
+    return (
+      <div className="mb-6">
+        <label className="block font-mono text-xs uppercase tracking-wider text-cyan-400/60 mb-2">
+          Bullet Points
+        </label>
+        <div className="space-y-2">
+          {points.map((point, index) => (
+            <div key={index} className="flex gap-2">
+              <input
+                type="text"
+                value={point}
+                onChange={(e) => {
+                  const newPoints = [...points];
+                  newPoints[index] = e.target.value;
+                  onUpdate({ bulletPoints: newPoints });
+                }}
+                placeholder={`Point ${index + 1}`}
+                className="input flex-1"
+              />
+              <button
+                onClick={() => {
+                  const newPoints = points.filter((_, i) => i !== index);
+                  onUpdate({ bulletPoints: newPoints });
+                }}
+                className="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 transition-colors"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={() => {
+            onUpdate({ bulletPoints: [...points, ''] });
+          }}
+          className="btn-ghost text-sm mt-2"
+        >
+          + Add Point
+        </button>
+      </div>
+    );
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-6">
-      <h3 className="text-xl font-bold text-white mb-4 capitalize">
-        Edit {section.type} Section
-      </h3>
+    <div>
+      {/* Section Header */}
+      <div className="mb-8">
+        <div className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-3">
+          <span className="text-xs font-mono uppercase tracking-wider text-cyan-400/70">
+            {section.type}
+          </span>
+        </div>
+        <h2 className="text-3xl font-bold text-white">
+          Edit {section.type.charAt(0).toUpperCase() + section.type.slice(1)} Section
+        </h2>
+        <p className="text-white/50 mt-2">
+          Customize this section to match your product and message
+        </p>
+      </div>
 
-      <div className="space-y-4">
-        {/* Headline */}
-        {(section.type === 'hero' ||
-          section.type === 'problem' ||
-          section.type === 'solution' ||
-          section.type === 'features' ||
-          section.type === 'testimonials' ||
-          section.type === 'guarantee' ||
-          section.type === 'cta') && (
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Headline
-            </label>
-            <input
-              type="text"
-              value={content.headline || ''}
-              onChange={(e) => onUpdate({ headline: e.target.value })}
-              className="w-full px-4 py-3 bg-gray-700 text-white rounded border border-gray-600 focus:border-cyan-400 focus:outline-none text-lg"
-              placeholder="Enter headline..."
-            />
-          </div>
-        )}
+      <div className="section-divider" />
 
-        {/* Subheadline */}
-        {(section.type === 'hero' || section.type === 'solution' || section.type === 'cta') && (
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Subheadline
-            </label>
-            <input
-              type="text"
-              value={content.subheadline || ''}
-              onChange={(e) => onUpdate({ subheadline: e.target.value })}
-              className="w-full px-4 py-3 bg-gray-700 text-white rounded border border-gray-600 focus:border-cyan-400 focus:outline-none"
-              placeholder="Enter subheadline..."
-            />
-          </div>
-        )}
+      {/* Dynamic Fields Based on Section Type */}
+      {(section.type === 'hero' || section.type === 'cta') && (
+        <>
+          {renderField('Headline', 'headline', 'text', 'Your compelling headline')}
+          {renderField('Subheadline', 'subheadline', 'text', 'Supporting text')}
+          {renderField('Body Text', 'body', 'textarea', 'Additional context or information')}
+          {renderField('CTA Button Text', 'ctaText', 'text', 'Get Started')}
+          {renderField('CTA URL', 'ctaUrl', 'url', '#signup')}
+        </>
+      )}
 
-        {/* Body Text */}
-        {(section.type === 'problem' ||
-          section.type === 'solution' ||
-          section.type === 'guarantee' ||
-          section.type === 'cta') && (
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">Body Text</label>
-            <textarea
-              value={content.body || ''}
-              onChange={(e) => onUpdate({ body: e.target.value })}
-              rows={4}
-              className="w-full px-4 py-3 bg-gray-700 text-white rounded border border-gray-600 focus:border-cyan-400 focus:outline-none"
-              placeholder="Enter body text..."
-            />
-          </div>
-        )}
+      {section.type === 'problem' && (
+        <>
+          {renderField('Headline', 'headline', 'text', 'What problem are you solving?')}
+          {renderField('Body Text', 'body', 'textarea', 'Describe the pain points')}
+          {renderBulletPoints()}
+        </>
+      )}
 
-        {/* Bullet Points */}
-        {(section.type === 'problem' || section.type === 'features') && (
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
-              Bullet Points
-            </label>
-            <div className="space-y-2">
-              {content.bulletPoints?.map((point, index) => (
-                <div key={index} className="flex gap-2">
-                  <input
-                    type="text"
-                    value={point}
-                    onChange={(e) => updateBulletPoint(index, e.target.value)}
-                    className="flex-1 px-4 py-2 bg-gray-700 text-white rounded border border-gray-600 focus:border-cyan-400 focus:outline-none"
-                  />
-                  <button
-                    onClick={() => removeBulletPoint(index)}
-                    className="px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-              <button
-                onClick={addBulletPoint}
-                className="w-full px-4 py-2 bg-gray-700 text-cyan-400 rounded border border-cyan-600 hover:bg-gray-600"
-              >
-                + Add Bullet Point
-              </button>
-            </div>
-          </div>
-        )}
+      {section.type === 'solution' && (
+        <>
+          {renderField('Headline', 'headline', 'text', 'Your solution headline')}
+          {renderField('Subheadline', 'subheadline', 'text', 'Supporting message')}
+          {renderField('Body Text', 'body', 'textarea', 'Describe your solution')}
+        </>
+      )}
 
-        {/* CTA */}
-        {(section.type === 'hero' || section.type === 'cta') && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">
-                CTA Button Text
-              </label>
-              <input
-                type="text"
-                value={content.ctaText || ''}
-                onChange={(e) => onUpdate({ ctaText: e.target.value })}
-                className="w-full px-4 py-3 bg-gray-700 text-white rounded border border-gray-600 focus:border-cyan-400 focus:outline-none"
-                placeholder="Get Started"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-300 mb-2">CTA URL</label>
-              <input
-                type="text"
-                value={content.ctaUrl || ''}
-                onChange={(e) => onUpdate({ ctaUrl: e.target.value })}
-                className="w-full px-4 py-3 bg-gray-700 text-white rounded border border-gray-600 focus:border-cyan-400 focus:outline-none"
-                placeholder="#signup"
-              />
-            </div>
-          </div>
-        )}
+      {section.type === 'features' && (
+        <>
+          {renderField('Headline', 'headline', 'text', 'What makes you special?')}
+          {renderBulletPoints()}
+        </>
+      )}
 
-        {/* Testimonials */}
-        {section.type === 'testimonials' && content.testimonials && (
-          <div>
-            <label className="block text-sm font-semibold text-gray-300 mb-2">
+      {section.type === 'guarantee' && (
+        <>
+          {renderField('Headline', 'headline', 'text', 'Your guarantee')}
+          {renderField('Body Text', 'body', 'textarea', 'Guarantee details')}
+        </>
+      )}
+
+      {section.type === 'testimonials' && (
+        <div>
+          {renderField('Headline', 'headline', 'text', 'Social Proof')}
+          <div className="mt-6">
+            <label className="block font-mono text-xs uppercase tracking-wider text-cyan-400/60 mb-4">
               Testimonials
             </label>
-            <div className="space-y-4">
-              {content.testimonials.map((testimonial, index) => (
-                <div key={testimonial.id} className="bg-gray-700 rounded p-4">
-                  <div className="grid grid-cols-2 gap-3 mb-3">
-                    <input
-                      type="text"
-                      value={testimonial.name}
-                      onChange={(e) => {
-                        const newTestimonials = [...content.testimonials!];
-                        newTestimonials[index] = {
-                          ...testimonial,
-                          name: e.target.value,
-                        };
-                        onUpdate({ testimonials: newTestimonials });
-                      }}
-                      placeholder="Name"
-                      className="px-3 py-2 bg-gray-600 text-white rounded border border-gray-500 focus:border-cyan-400 focus:outline-none"
-                    />
-                    <input
-                      type="text"
-                      value={testimonial.role}
-                      onChange={(e) => {
-                        const newTestimonials = [...content.testimonials!];
-                        newTestimonials[index] = {
-                          ...testimonial,
-                          role: e.target.value,
-                        };
-                        onUpdate({ testimonials: newTestimonials });
-                      }}
-                      placeholder="Role"
-                      className="px-3 py-2 bg-gray-600 text-white rounded border border-gray-500 focus:border-cyan-400 focus:outline-none"
-                    />
-                  </div>
-                  <textarea
-                    value={testimonial.content}
+            {(content.testimonials || []).map((testimonial, index) => (
+              <div
+                key={testimonial.id}
+                className="corner-brackets bg-white/5 border border-cyan-500/10 p-4 mb-4 rounded-lg"
+              >
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  <input
+                    type="text"
+                    value={testimonial.name}
                     onChange={(e) => {
-                      const newTestimonials = [...content.testimonials!];
-                      newTestimonials[index] = {
-                        ...testimonial,
-                        content: e.target.value,
-                      };
+                      const newTestimonials = [...(content.testimonials || [])];
+                      newTestimonials[index] = { ...testimonial, name: e.target.value };
                       onUpdate({ testimonials: newTestimonials });
                     }}
-                    rows={2}
-                    placeholder="Testimonial content"
-                    className="w-full px-3 py-2 bg-gray-600 text-white rounded border border-gray-500 focus:border-cyan-400 focus:outline-none"
+                    placeholder="Customer Name"
+                    className="input"
+                  />
+                  <input
+                    type="text"
+                    value={testimonial.role}
+                    onChange={(e) => {
+                      const newTestimonials = [...(content.testimonials || [])];
+                      newTestimonials[index] = { ...testimonial, role: e.target.value };
+                      onUpdate({ testimonials: newTestimonials });
+                    }}
+                    placeholder="Role/Title"
+                    className="input"
                   />
                 </div>
-              ))}
-            </div>
+                <textarea
+                  value={testimonial.content}
+                  onChange={(e) => {
+                    const newTestimonials = [...(content.testimonials || [])];
+                    newTestimonials[index] = { ...testimonial, content: e.target.value };
+                    onUpdate({ testimonials: newTestimonials });
+                  }}
+                  placeholder="Testimonial text"
+                  className="textarea w-full mb-3"
+                  rows={2}
+                />
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 text-sm text-white/60">
+                    <input
+                      type="number"
+                      min="1"
+                      max="5"
+                      value={testimonial.rating || 5}
+                      onChange={(e) => {
+                        const newTestimonials = [...(content.testimonials || [])];
+                        newTestimonials[index] = { ...testimonial, rating: parseInt(e.target.value) };
+                        onUpdate({ testimonials: newTestimonials });
+                      }}
+                      className="input w-16"
+                    />
+                    <span>Star Rating</span>
+                  </label>
+                  <button
+                    onClick={() => {
+                      const newTestimonials = (content.testimonials || []).filter((_, i) => i !== index);
+                      onUpdate({ testimonials: newTestimonials });
+                    }}
+                    className="text-red-400 hover:text-red-300 text-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            ))}
+            <button
+              onClick={() => {
+                const newTestimonials = [
+                  ...(content.testimonials || []),
+                  {
+                    id: `t${Date.now()}`,
+                    name: '',
+                    role: '',
+                    content: '',
+                    rating: 5,
+                  },
+                ];
+                onUpdate({ testimonials: newTestimonials });
+              }}
+              className="btn-ghost text-sm"
+            >
+              + Add Testimonial
+            </button>
           </div>
-        )}
+        </div>
+      )}
+
+      {/* Pro Tips */}
+      <div className="section-divider" />
+      <div className="bg-cyan-500/5 border border-cyan-500/20 rounded-lg p-4">
+        <div className="flex items-start gap-3">
+          <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <span className="text-cyan-400 text-xs">💡</span>
+          </div>
+          <div>
+            <h4 className="font-mono text-xs uppercase tracking-wider text-cyan-400/80 mb-1">
+              Pro Tip
+            </h4>
+            <p className="text-sm text-white/60">
+              {getProTip(section.type)}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
+}
+
+function getProTip(sectionType: string): string {
+  const tips: Record<string, string> = {
+    hero: 'Lead with a strong benefit-driven headline. Focus on the transformation, not just features.',
+    problem: 'Make the pain points specific and relatable. Your audience should think "Yes, that\'s exactly my problem!"',
+    solution: 'Position your product as the bridge between their current pain and desired outcome.',
+    features: 'Frame features as benefits. Instead of "Fast processing", say "Save 10 hours per week".',
+    testimonials: 'Use specific, detailed testimonials with real names and roles. Specificity builds trust.',
+    guarantee: 'A strong guarantee reduces risk and shows confidence in your product. Make it clear and simple.',
+    cta: 'Create urgency without being pushy. Include what happens next after they click.',
+  };
+  return tips[sectionType] || 'Customize this section to match your brand voice and message.';
 }

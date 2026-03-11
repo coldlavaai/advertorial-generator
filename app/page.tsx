@@ -3,23 +3,40 @@
 import { useState } from 'react';
 import TemplateSelector from '@/components/TemplateSelector';
 import AdvertorialEditor from '@/components/AdvertorialEditor';
+import PoweredBy from '@/components/PoweredBy';
 import { AdvertorialTemplate } from '@/types/advertorial';
 
 export default function Home() {
   const [selectedTemplate, setSelectedTemplate] = useState<AdvertorialTemplate | null>(null);
 
   return (
-    <main className="min-h-screen bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold text-cyan-400 mb-2">
-            Cold Lava Advertorial Generator
-          </h1>
-          <p className="text-gray-400">
-            Create high-converting landing pages in minutes
-          </p>
-        </header>
+    <div className="min-h-screen flex flex-col">
+      {/* Header */}
+      <header className="border-b border-cyan-500/10 bg-black/40 backdrop-blur-lg sticky top-0 z-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">
+                Advertorial Generator
+              </h1>
+              <p className="text-sm font-mono uppercase tracking-wider text-cyan-400/60">
+                Cold Lava Tools
+              </p>
+            </div>
+            {selectedTemplate && (
+              <button
+                onClick={() => setSelectedTemplate(null)}
+                className="btn-ghost text-sm"
+              >
+                ← Back to Templates
+              </button>
+            )}
+          </div>
+        </div>
+      </header>
 
+      {/* Main Content */}
+      <main className="flex-1">
         {!selectedTemplate ? (
           <TemplateSelector onSelectTemplate={setSelectedTemplate} />
         ) : (
@@ -28,7 +45,10 @@ export default function Home() {
             onBack={() => setSelectedTemplate(null)}
           />
         )}
-      </div>
-    </main>
+      </main>
+
+      {/* Footer */}
+      <PoweredBy />
+    </div>
   );
 }

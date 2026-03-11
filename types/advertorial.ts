@@ -2,8 +2,9 @@ export interface AdvertorialTemplate {
   id: string;
   name: string;
   description: string;
-  category: 'health' | 'finance' | 'software' | 'ecommerce';
+  category: 'health' | 'finance' | 'software' | 'ecommerce' | 'saas' | 'legal';
   thumbnail: string;
+  features: string[];
   sections: AdvertorialSection[];
 }
 
@@ -43,5 +44,9 @@ export interface AdvertorialProject {
     title: string;
     description: string;
     productName: string;
+    keywords?: string[];
+    author?: string;
   };
+  createdAt: string;
+  updatedAt: string;
 }

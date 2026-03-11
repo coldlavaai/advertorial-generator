@@ -1,48 +1,47 @@
 'use client';
 
-import { AdvertorialTemplate, SectionContent, AdvertorialSection } from '@/types/advertorial';
+import { AdvertorialProject } from '@/types/advertorial';
+import { useState } from 'react';
 
 interface AdvertorialPreviewProps {
-  template: AdvertorialTemplate;
-  customizations: {
-    [sectionId: string]: Partial<SectionContent>;
-  };
-  metadata: {
-    title: string;
-    description: string;
-    productName: string;
-  };
+  project: AdvertorialProject;
 }
 
-export default function AdvertorialPreview({
-  template,
-  customizations,
-  metadata,
-}: AdvertorialPreviewProps) {
-  const getSectionContent = (section: AdvertorialSection): SectionContent => {
-    return {
-      ...section.content,
-      ...customizations[section.id],
-    } as SectionContent;
+export default function AdvertorialPreview({ project }: AdvertorialPreviewProps) {
+  const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop');
+  const { template, customizations, metadata } = project;
+
+  const replacePlaceholders = (text: string) => {
+    return text
+      .replace(/\[Product Name\]/g, metadata.productName)
+      .replace(/\[Product\]/g, metadata.productName);
   };
 
-  const renderSection = (section: AdvertorialSection) => {
-    const content = getSectionContent(section);
+  const renderSection = (sectionId: string) => {
+    const section = template.sections.find((s) => s.id === sectionId);
+    if (!section) return null;
+
+    const content = { ...section.content, ...customizations[sectionId] };
 
     switch (section.type) {
       case 'hero':
         return (
-          <section className="bg-gradient-to-br from-cyan-600 to-blue-700 py-20 px-6">
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-                {content.headline}
+          <section className="py-20 bg-gradient-to-br from-cyan-500 to-cyan-600 text-white text-center">
+            <div className="container mx-auto px-6">
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                {replacePlaceholders(content.headline || '')}
               </h1>
-              <p className="text-2xl text-cyan-100 mb-8">{content.subheadline}</p>
+              <p className="text-2xl mb-4 text-white/90">
+                {replacePlaceholders(content.subheadline || '')}
+              </p>
+              <p className="text-lg mb-8 text-white/80">
+                {replacePlaceholders(content.body || '')}
+              </p>
               <a
-                href={content.ctaUrl}
-                className="inline-block px-10 py-4 bg-orange-500 text-white text-xl font-bold rounded-lg hover:bg-orange-600 transition-colors"
+                href={content.ctaUrl || '#'}
+                className="inline-block bg-white text-cyan-600 px-10 py-4 rounded-lg text-lg font-bold hover:bg-gray-100 transition-colors"
               >
-                {content.ctaText}
+                {content.ctaText || 'Get Started'}
               </a>
             </div>
           </section>
@@ -50,20 +49,20 @@ export default function AdvertorialPreview({
 
       case 'problem':
         return (
-          <section className="bg-gray-800 py-16 px-6">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold text-white mb-6 text-center">
-                {content.headline}
+          <section className="py-16 bg-gray-50">
+            <div className="container mx-auto px-6 max-w-4xl">
+              <h2 className="text-4xl font-bold mb-6 text-gray-900">
+                {replacePlaceholders(content.headline || '')}
               </h2>
-              {content.body && (
-                <p className="text-xl text-gray-300 mb-8 text-center">{content.body}</p>
-              )}
+              <p className="text-xl mb-8 text-gray-700">
+                {replacePlaceholders(content.body || '')}
+              </p>
               {content.bulletPoints && content.bulletPoints.length > 0 && (
                 <ul className="space-y-4">
                   {content.bulletPoints.map((point, index) => (
-                    <li key={index} className="flex items-start">
-                      <span className="text-red-500 text-2xl mr-4">✗</span>
-                      <span className="text-lg text-gray-300">{point}</span>
+                    <li key={index} className="flex items-start gap-3 text-lg text-gray-700">
+                      <span className="text-cyan-500 text-2xl">→</span>
+                      <span>{replacePlaceholders(point)}</span>
                     </li>
                   ))}
                 </ul>
@@ -74,30 +73,41 @@ export default function AdvertorialPreview({
 
       case 'solution':
         return (
-          <section className="bg-gradient-to-br from-cyan-500 to-blue-600 py-16 px-6">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl font-bold text-white mb-4">{content.headline}</h2>
-              {content.subheadline && (
-                <p className="text-2xl text-cyan-100 mb-6">{content.subheadline}</p>
-              )}
-              {content.body && <p className="text-xl text-white/90">{content.body}</p>}
+          <section className="py-16 bg-white">
+            <div className="container mx-auto px-6 max-w-4xl">
+              <h2 className="text-4xl font-bold mb-4 text-gray-900">
+                {replacePlaceholders(content.headline || '')}
+              </h2>
+              <h3 className="text-2xl text-cyan-600 mb-6 font-normal">
+                {replacePlaceholders(content.subheadline || '')}
+              </h3>
+              <p className="text-xl text-gray-700 leading-relaxed">
+                {replacePlaceholders(content.body || '')}
+              </p>
             </div>
           </section>
         );
 
       case 'features':
         return (
-          <section className="bg-gray-900 py-16 px-6">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold text-white mb-12 text-center">
-                {content.headline}
+          <section className="py-16 bg-gray-50">
+            <div className="container mx-auto px-6 max-w-4xl">
+              <h2 className="text-4xl font-bold mb-10 text-gray-900 text-center">
+                {replacePlaceholders(content.headline || '')}
               </h2>
               {content.bulletPoints && content.bulletPoints.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 gap-6">
                   {content.bulletPoints.map((point, index) => (
-                    <div key={index} className="flex items-start bg-gray-800 p-6 rounded-lg">
-                      <span className="text-cyan-400 text-2xl mr-4">✓</span>
-                      <span className="text-lg text-gray-200">{point}</span>
+                    <div
+                      key={index}
+                      className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:border-cyan-300 transition-colors"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 bg-cyan-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <span className="text-cyan-600 font-bold">✓</span>
+                        </div>
+                        <p className="text-gray-800 text-lg">{replacePlaceholders(point)}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -108,63 +118,76 @@ export default function AdvertorialPreview({
 
       case 'testimonials':
         return (
-          <section className="bg-gray-800 py-16 px-6">
-            <div className="max-w-5xl mx-auto">
-              <h2 className="text-4xl font-bold text-white mb-12 text-center">
-                {content.headline}
+          <section className="py-16 bg-white">
+            <div className="container mx-auto px-6 max-w-6xl">
+              <h2 className="text-4xl font-bold mb-12 text-gray-900 text-center">
+                {content.headline || ''}
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {content.testimonials?.map((testimonial) => (
-                  <div
-                    key={testimonial.id}
-                    className="bg-gray-700 p-6 rounded-lg border-l-4 border-cyan-400"
-                  >
-                    <div className="flex items-center mb-4">
-                      {[...Array(testimonial.rating || 5)].map((_, i) => (
-                        <span key={i} className="text-yellow-400 text-xl">
-                          ★
-                        </span>
-                      ))}
+              {content.testimonials && content.testimonials.length > 0 && (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {content.testimonials.map((testimonial) => (
+                    <div
+                      key={testimonial.id}
+                      className="bg-gray-50 p-8 rounded-lg shadow-sm border border-gray-200"
+                    >
+                      {testimonial.rating && (
+                        <div className="flex gap-1 mb-4">
+                          {Array.from({ length: testimonial.rating }).map((_, i) => (
+                            <span key={i} className="text-yellow-400 text-xl">★</span>
+                          ))}
+                        </div>
+                      )}
+                      <p className="text-gray-700 italic mb-6 leading-relaxed">
+                        "{testimonial.content}"
+                      </p>
+                      <div className="border-t border-gray-200 pt-4">
+                        <p className="font-bold text-gray-900">{testimonial.name}</p>
+                        <p className="text-sm text-gray-600">{testimonial.role}</p>
+                      </div>
                     </div>
-                    <p className="text-gray-200 mb-4 italic">&ldquo;{testimonial.content}&rdquo;</p>
-                    <div>
-                      <p className="text-white font-semibold">{testimonial.name}</p>
-                      <p className="text-cyan-400 text-sm">{testimonial.role}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
         );
 
       case 'guarantee':
         return (
-          <section className="bg-orange-500 py-12 px-6">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl font-bold text-white mb-4">{content.headline}</h2>
-              <p className="text-xl text-white/90">{content.body}</p>
+          <section className="py-16 bg-cyan-50 text-center">
+            <div className="container mx-auto px-6 max-w-4xl">
+              <div className="inline-block w-20 h-20 bg-cyan-500 rounded-full flex items-center justify-center mb-6">
+                <span className="text-white text-4xl">✓</span>
+              </div>
+              <h2 className="text-4xl font-bold mb-6 text-gray-900">
+                {content.headline || ''}
+              </h2>
+              <p className="text-xl text-gray-700 leading-relaxed">
+                {replacePlaceholders(content.body || '')}
+              </p>
             </div>
           </section>
         );
 
       case 'cta':
         return (
-          <section className="bg-gradient-to-br from-orange-500 to-red-600 py-20 px-6">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-5xl font-bold text-white mb-4">{content.headline}</h2>
-              {content.subheadline && (
-                <p className="text-2xl text-orange-100 mb-8">{content.subheadline}</p>
-              )}
+          <section className="py-20 bg-gradient-to-br from-cyan-500 to-cyan-600 text-white text-center">
+            <div className="container mx-auto px-6">
+              <h2 className="text-5xl font-bold mb-4">
+                {replacePlaceholders(content.headline || '')}
+              </h2>
+              <p className="text-2xl mb-8 text-white/90">
+                {replacePlaceholders(content.subheadline || '')}
+              </p>
               <a
-                href={content.ctaUrl}
-                className="inline-block px-12 py-5 bg-white text-orange-600 text-2xl font-bold rounded-lg hover:bg-gray-100 transition-colors mb-6"
+                href={content.ctaUrl || '#'}
+                className="inline-block bg-white text-cyan-600 px-12 py-5 rounded-lg text-xl font-bold hover:bg-gray-100 transition-colors mb-6"
               >
-                {content.ctaText}
+                {content.ctaText || 'Get Started'}
               </a>
-              {content.body && (
-                <p className="text-white/90 text-sm">{content.body}</p>
-              )}
+              <p className="text-white/80">
+                {replacePlaceholders(content.body || '')}
+              </p>
             </div>
           </section>
         );
@@ -175,17 +198,60 @@ export default function AdvertorialPreview({
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-2xl">
-      <div className="bg-gray-900 text-white text-center py-4 px-6">
-        <h3 className="text-lg font-bold">Preview Mode</h3>
-        <p className="text-sm text-gray-400">This is how your landing page will look</p>
+    <div className="bg-gray-100 min-h-screen">
+      {/* Preview Toolbar */}
+      <div className="bg-cl-surface border-b border-cyan-500/20 p-4 sticky top-0 z-40">
+        <div className="container mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+            <span className="font-mono text-xs uppercase tracking-wider text-white/60">
+              Live Preview
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 bg-white/10 rounded-lg p-1">
+            <button
+              onClick={() => setViewMode('desktop')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                viewMode === 'desktop'
+                  ? 'bg-cyan-500 text-white'
+                  : 'text-white/60 hover:text-white'
+              }`}
+            >
+              Desktop
+            </button>
+            <button
+              onClick={() => setViewMode('mobile')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                viewMode === 'mobile'
+                  ? 'bg-cyan-500 text-white'
+                  : 'text-white/60 hover:text-white'
+              }`}
+            >
+              Mobile
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="bg-gray-900">
-        {template.sections
-          .sort((a, b) => a.order - b.order)
-          .map((section) => (
-            <div key={section.id}>{renderSection(section)}</div>
+
+      {/* Preview Content */}
+      <div className="py-8">
+        <div
+          className={`mx-auto bg-white shadow-2xl transition-all duration-300 ${
+            viewMode === 'mobile' ? 'max-w-[375px]' : 'max-w-full'
+          }`}
+        >
+          {template.sections.map((section) => (
+            <div key={section.id}>{renderSection(section.id)}</div>
           ))}
+
+          {/* Footer */}
+          <footer className="bg-gray-900 text-white py-12 text-center">
+            <p className="text-sm text-gray-400">
+              Powered by <strong className="text-cyan-400">COLD LAVA</strong>
+            </p>
+          </footer>
+        </div>
       </div>
     </div>
   );
