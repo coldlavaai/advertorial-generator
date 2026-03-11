@@ -200,43 +200,32 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
   return (
     <div>
       {/* Preview Toolbar */}
-      <div
-        className="rounded-sm mb-4 p-3 flex items-center justify-between"
-        style={{
-          background: 'rgba(0,0,0,0.4)',
-          border: '1px solid rgba(6,182,212,0.1)',
-        }}
-      >
+      <div className="bg-cl-card border border-cl-border rounded-2xl mb-4 p-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/60" />
-          <span className="font-mono text-[0.65rem] tracking-[0.12em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <div className="w-2 h-2 rounded-full bg-cl-green" />
+          <span className="font-mono text-sm text-cl-muted uppercase tracking-wider">
             Preview
           </span>
         </div>
 
-        <div
-          className="flex items-center gap-0.5 p-0.5 rounded-sm"
-          style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(6,182,212,0.08)' }}
-        >
+        <div className="flex items-center gap-0.5 p-0.5 rounded-lg bg-cl-bg border border-cl-border">
           <button
             onClick={() => setViewMode('desktop')}
-            className="px-3 py-1 rounded-sm font-mono text-[0.65rem] tracking-[0.08em] transition-all"
-            style={{
-              background: viewMode === 'desktop' ? 'rgba(6,182,212,0.15)' : 'transparent',
-              color: viewMode === 'desktop' ? '#06B6D4' : 'rgba(255,255,255,0.3)',
-              border: viewMode === 'desktop' ? '1px solid rgba(6,182,212,0.2)' : '1px solid transparent',
-            }}
+            className={`px-3 py-1 rounded-md font-mono text-xs transition-all ${
+              viewMode === 'desktop'
+                ? 'bg-cl-card border border-cl-cyan/20 text-cl-cyan'
+                : 'text-cl-muted border border-transparent'
+            }`}
           >
             Desktop
           </button>
           <button
             onClick={() => setViewMode('mobile')}
-            className="px-3 py-1 rounded-sm font-mono text-[0.65rem] tracking-[0.08em] transition-all"
-            style={{
-              background: viewMode === 'mobile' ? 'rgba(6,182,212,0.15)' : 'transparent',
-              color: viewMode === 'mobile' ? '#06B6D4' : 'rgba(255,255,255,0.3)',
-              border: viewMode === 'mobile' ? '1px solid rgba(6,182,212,0.2)' : '1px solid transparent',
-            }}
+            className={`px-3 py-1 rounded-md font-mono text-xs transition-all ${
+              viewMode === 'mobile'
+                ? 'bg-cl-card border border-cl-cyan/20 text-cl-cyan'
+                : 'text-cl-muted border border-transparent'
+            }`}
           >
             Mobile
           </button>
@@ -245,12 +234,10 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
 
       {/* Preview Content */}
       <div
-        className={`bg-white shadow-2xl transition-all duration-300 rounded-sm overflow-hidden ${
+        className={`bg-white shadow-2xl transition-all duration-300 rounded-xl overflow-hidden ${
           viewMode === 'mobile' ? 'max-w-[375px] mx-auto' : 'max-w-full'
         }`}
-        style={{
-          border: '1px solid rgba(6,182,212,0.08)',
-        }}
+        style={{ border: '1px solid #1a1a1a' }}
       >
         {template.sections.map((section) => (
           <div key={section.id}>{renderSection(section.id)}</div>
@@ -259,10 +246,10 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
         {/* Footer */}
         <footer className="bg-gray-900 text-white py-10 text-center">
           <div className="flex items-center justify-center gap-2">
-            <span className="font-mono text-[0.65rem] tracking-[0.15em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
+            <span className="font-mono text-xs tracking-widest uppercase text-gray-500">
               Powered by
             </span>
-            <span className="font-mono text-[0.75rem] font-bold tracking-[0.1em]" style={{ color: '#06B6D4' }}>
+            <span className="font-mono text-sm font-bold tracking-wider text-cl-cyan">
               COLD LAVA
             </span>
           </div>

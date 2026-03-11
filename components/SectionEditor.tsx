@@ -20,9 +20,7 @@ export default function SectionEditor({ section, content, onUpdate, productName 
 
     return (
       <div className="mb-5">
-        <label className="label-mono block mb-2">
-          {label}
-        </label>
+        <label className="label-mono block mb-2">{label}</label>
         {type === 'textarea' ? (
           <textarea
             value={value}
@@ -40,7 +38,7 @@ export default function SectionEditor({ section, content, onUpdate, productName 
             className="input w-full"
           />
         )}
-        <p className="font-mono text-[0.65rem] mt-1.5 tracking-[0.05em]" style={{ color: 'rgba(255,255,255,0.2)' }}>
+        <p className="font-mono text-xs mt-1.5 text-cl-muted">
           Use [Product Name] as placeholder for &ldquo;{productName}&rdquo;
         </p>
       </div>
@@ -56,7 +54,7 @@ export default function SectionEditor({ section, content, onUpdate, productName 
         <div className="space-y-2">
           {points.map((point, index) => (
             <div key={index} className="flex gap-2 items-center">
-              <span className="font-mono text-[0.65rem] shrink-0" style={{ color: 'rgba(6,182,212,0.35)' }}>
+              <span className="font-mono text-xs shrink-0 text-cl-cyan">
                 {String(index + 1).padStart(2, '0')}
               </span>
               <input
@@ -75,20 +73,7 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                   const newPoints = points.filter((_, i) => i !== index);
                   onUpdate({ bulletPoints: newPoints });
                 }}
-                className="w-8 h-8 flex items-center justify-center rounded-sm transition-colors shrink-0"
-                style={{
-                  background: 'rgba(239,68,68,0.06)',
-                  border: '1px solid rgba(239,68,68,0.2)',
-                  color: 'rgba(239,68,68,0.6)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(239,68,68,0.12)';
-                  e.currentTarget.style.borderColor = 'rgba(239,68,68,0.35)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(239,68,68,0.06)';
-                  e.currentTarget.style.borderColor = 'rgba(239,68,68,0.2)';
-                }}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-cl-card border border-cl-red/20 text-cl-red hover:bg-cl-red/10 transition-colors shrink-0"
               >
                 ×
               </button>
@@ -109,23 +94,18 @@ export default function SectionEditor({ section, content, onUpdate, productName 
     <div>
       {/* Section Header */}
       <div className="mb-6">
-        <div className="pill mb-3">
-          {section.type}
-        </div>
-        <h2
-          className="text-[1.5rem] font-bold text-white"
-          style={{ letterSpacing: '-0.02em' }}
-        >
+        <div className="pill mb-3">{section.type}</div>
+        <h2 className="text-2xl font-bold text-white">
           Edit {section.type.charAt(0).toUpperCase() + section.type.slice(1)} Section
         </h2>
-        <p className="mt-1.5 text-[0.85rem]" style={{ color: 'rgba(255,255,255,0.35)' }}>
+        <p className="mt-1.5 text-sm text-cl-muted">
           Customize this section to match your product and message
         </p>
       </div>
 
       <div className="section-divider" />
 
-      {/* Dynamic Fields Based on Section Type */}
+      {/* Dynamic Fields */}
       {(section.type === 'hero' || section.type === 'cta') && (
         <>
           {renderField('Headline', 'headline', 'text', 'Your compelling headline')}
@@ -174,11 +154,7 @@ export default function SectionEditor({ section, content, onUpdate, productName 
             {(content.testimonials || []).map((testimonial, index) => (
               <div
                 key={testimonial.id}
-                className="corner-brackets p-4 mb-3 rounded-sm"
-                style={{
-                  background: 'rgba(0,0,0,0.3)',
-                  border: '1px solid rgba(6,182,212,0.1)',
-                }}
+                className="bg-cl-card border border-cl-border rounded-2xl p-4 mb-3"
               >
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <input
@@ -229,19 +205,14 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                       }}
                       className="input w-16"
                     />
-                    <span className="font-mono text-[0.7rem]" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                      Stars
-                    </span>
+                    <span className="text-sm text-cl-muted">Stars</span>
                   </label>
                   <button
                     onClick={() => {
                       const newTestimonials = (content.testimonials || []).filter((_, i) => i !== index);
                       onUpdate({ testimonials: newTestimonials });
                     }}
-                    className="font-mono text-[0.7rem] tracking-[0.05em] transition-colors"
-                    style={{ color: 'rgba(239,68,68,0.5)' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = 'rgba(239,68,68,0.8)'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(239,68,68,0.5)'; }}
+                    className="text-sm text-cl-red hover:text-cl-red/80 transition-colors"
                   >
                     Remove
                   </button>
@@ -266,29 +237,20 @@ export default function SectionEditor({ section, content, onUpdate, productName 
 
       {/* Pro Tips */}
       <div className="section-divider" />
-      <div
-        className="corner-brackets p-4 rounded-sm"
-        style={{
-          background: 'rgba(6,182,212,0.02)',
-          border: '1px solid rgba(6,182,212,0.12)',
-        }}
-      >
+      <div className="bg-cl-card border border-cl-border rounded-2xl p-4">
         <div className="flex items-start gap-3">
-          <div
-            className="w-5 h-5 rounded-sm flex items-center justify-center shrink-0 mt-0.5"
-            style={{ background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.2)' }}
-          >
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ color: 'rgba(6,182,212,0.6)' }}>
-              <circle cx="5" cy="5" r="4" stroke="currentColor" strokeWidth="1" />
-              <line x1="5" y1="3" x2="5" y2="5.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-              <circle cx="5" cy="7" r="0.5" fill="currentColor" />
+          <div className="w-6 h-6 rounded-lg bg-cl-bg border border-cl-border flex items-center justify-center shrink-0 mt-0.5">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-cl-cyan">
+              <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1" />
+              <line x1="6" y1="3.5" x2="6" y2="6.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+              <circle cx="6" cy="8.5" r="0.5" fill="currentColor" />
             </svg>
           </div>
           <div>
-            <span className="font-mono text-[0.65rem] tracking-[0.1em] uppercase block mb-1" style={{ color: 'rgba(6,182,212,0.5)' }}>
+            <span className="font-mono text-xs text-cl-cyan uppercase tracking-wider block mb-1">
               Pro Tip
             </span>
-            <p className="text-[0.8rem]" style={{ color: 'rgba(255,255,255,0.4)', lineHeight: 1.6 }}>
+            <p className="text-sm text-cl-muted leading-relaxed">
               {getProTip(section.type)}
             </p>
           </div>

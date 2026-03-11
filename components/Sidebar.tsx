@@ -58,32 +58,16 @@ export default function Sidebar({ onNavigate, currentView }: SidebarProps) {
   ];
 
   return (
-    <div
-      className="w-[260px] flex flex-col h-screen shrink-0"
-      style={{
-        background: 'rgba(3,3,5,0.95)',
-        borderRight: '1px solid rgba(6,182,212,0.1)',
-        backdropFilter: 'blur(20px)',
-      }}
-    >
+    <div className="w-[260px] flex flex-col h-screen shrink-0 bg-cl-bg border-r border-cl-border">
       {/* Logo */}
-      <div className="px-6 py-6" style={{ borderBottom: '1px solid rgba(6,182,212,0.08)' }}>
+      <div className="px-6 py-6 border-b border-cl-border">
         <div className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-md flex items-center justify-center"
-            style={{
-              background: 'rgba(6,182,212,0.1)',
-              border: '1px solid rgba(6,182,212,0.25)',
-            }}
-          >
-            <span className="font-mono font-bold text-sm" style={{ color: 'rgba(6,182,212,0.8)' }}>CL</span>
+          <div className="w-9 h-9 rounded-lg bg-cl-card border border-cl-border flex items-center justify-center">
+            <span className="font-mono font-bold text-sm text-cl-cyan">CL</span>
           </div>
           <div className="flex flex-col">
             <span className="font-mono font-bold text-sm tracking-wider text-white">COLD LAVA</span>
-            <span
-              className="font-mono text-[0.6rem] tracking-[0.15em] uppercase"
-              style={{ color: 'rgba(6,182,212,0.4)' }}
-            >
+            <span className="font-mono text-xs tracking-widest uppercase text-cl-muted">
               Advertorial Gen
             </span>
           </div>
@@ -93,10 +77,7 @@ export default function Sidebar({ onNavigate, currentView }: SidebarProps) {
       {/* Navigation */}
       <nav className="flex-1 px-3 py-6 space-y-0.5">
         <div className="px-3 mb-4">
-          <span
-            className="font-mono text-[0.65rem] tracking-[0.15em] uppercase"
-            style={{ color: 'rgba(255,255,255,0.2)' }}
-          >
+          <span className="font-mono text-xs tracking-widest uppercase text-cl-muted">
             Navigation
           </span>
         </div>
@@ -107,39 +88,21 @@ export default function Sidebar({ onNavigate, currentView }: SidebarProps) {
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 group relative"
-              style={{
-                background: isActive ? 'rgba(6,182,212,0.06)' : 'transparent',
-                borderLeft: isActive ? '2px solid #06B6D4' : '2px solid transparent',
-              }}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
+                isActive
+                  ? 'bg-cl-card border-l-2 border-cl-cyan'
+                  : 'border-l-2 border-transparent hover:bg-cl-card/50'
+              }`}
             >
-              {/* Number */}
-              <span
-                className="font-mono text-[0.6rem] w-4"
-                style={{
-                  color: isActive ? 'rgba(6,182,212,0.6)' : 'rgba(255,255,255,0.15)',
-                }}
-              >
+              <span className={`font-mono text-xs w-4 ${isActive ? 'text-cl-cyan' : 'text-cl-muted'}`}>
                 {item.number}
               </span>
-
-              {/* Icon */}
-              <span
-                style={{
-                  color: isActive ? '#06B6D4' : 'rgba(255,255,255,0.35)',
-                }}
-                className="transition-colors group-hover:text-white/60"
-              >
+              <span className={`transition-colors ${isActive ? 'text-cl-cyan' : 'text-cl-muted group-hover:text-white'}`}>
                 {item.icon}
               </span>
-
-              {/* Label */}
-              <span
-                className="font-mono text-[0.8rem] tracking-[0.05em] transition-colors"
-                style={{
-                  color: isActive ? '#06B6D4' : 'rgba(255,255,255,0.5)',
-                }}
-              >
+              <span className={`font-mono text-sm tracking-wide transition-colors ${
+                isActive ? 'text-cl-cyan' : 'text-cl-muted group-hover:text-white'
+              }`}>
                 {item.label}
               </span>
             </button>
@@ -148,20 +111,14 @@ export default function Sidebar({ onNavigate, currentView }: SidebarProps) {
       </nav>
 
       {/* Footer */}
-      <div className="px-6 py-4" style={{ borderTop: '1px solid rgba(6,182,212,0.06)' }}>
+      <div className="px-6 py-4 border-t border-cl-border">
         <div className="flex items-center justify-between">
-          <span
-            className="font-mono text-[0.6rem] tracking-[0.12em] uppercase"
-            style={{ color: 'rgba(255,255,255,0.15)' }}
-          >
+          <span className="font-mono text-xs tracking-wider uppercase text-cl-muted">
             v1.0.0
           </span>
           <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/60" />
-            <span
-              className="font-mono text-[0.6rem] tracking-[0.1em]"
-              style={{ color: 'rgba(255,255,255,0.2)' }}
-            >
+            <div className="w-1.5 h-1.5 rounded-full bg-cl-green" />
+            <span className="font-mono text-xs tracking-wider text-cl-muted">
               Active
             </span>
           </div>

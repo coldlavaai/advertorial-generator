@@ -28,7 +28,6 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
   const [activeSection, setActiveSection] = useState(template.sections[0]?.id || '');
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle');
 
-  // Auto-save to localStorage
   useEffect(() => {
     const timer = setTimeout(() => {
       try {
@@ -40,11 +39,9 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
         setSaveStatus('error');
       }
     }, 1000);
-
     return () => clearTimeout(timer);
   }, [project]);
 
-  // Load from localStorage on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem('advertorial_draft');
@@ -98,99 +95,61 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
   return (
     <div className="flex-1 flex flex-col h-screen overflow-hidden">
       {/* Top Bar */}
-      <div
-        className="px-5 py-3.5 flex items-center justify-between shrink-0"
-        style={{
-          background: 'rgba(3,3,5,0.95)',
-          borderBottom: '1px solid rgba(6,182,212,0.1)',
-          backdropFilter: 'blur(20px)',
-        }}
-      >
+      <div className="px-5 py-3.5 flex items-center justify-between shrink-0 bg-cl-bg border-b border-cl-border">
         <div className="flex items-center gap-4">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-sm transition-all"
-            style={{
-              background: 'rgba(0,0,0,0.4)',
-              border: '1px solid rgba(6,182,212,0.1)',
-              color: 'rgba(255,255,255,0.4)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(6,182,212,0.25)';
-              e.currentTarget.style.color = 'rgba(255,255,255,0.7)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(6,182,212,0.1)';
-              e.currentTarget.style.color = 'rgba(255,255,255,0.4)';
-            }}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cl-card border border-cl-border text-cl-muted hover:text-white hover:border-cl-cyan/30 transition-all"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M9 3L5 7L9 11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
             </svg>
-            <span className="font-mono text-[0.7rem] tracking-[0.05em]">Back</span>
+            <span className="font-mono text-sm">Back</span>
           </button>
 
-          <div className="h-4 w-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
+          <div className="h-4 w-px bg-cl-border" />
 
           <div>
-            <h2 className="text-white font-medium text-[0.9rem]">{template.name}</h2>
+            <h2 className="text-white font-semibold text-base">{template.name}</h2>
             <div className="flex items-center gap-2 mt-0.5">
               {saveStatus === 'saved' && (
                 <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(16,185,129,0.6)' }} />
-                  <span className="font-mono text-[0.6rem] tracking-[0.1em]" style={{ color: 'rgba(16,185,129,0.6)' }}>
-                    SAVED
-                  </span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-cl-green" />
+                  <span className="font-mono text-xs text-cl-green">SAVED</span>
                 </div>
               )}
               {saveStatus === 'error' && (
                 <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(239,68,68,0.6)' }} />
-                  <span className="font-mono text-[0.6rem] tracking-[0.1em]" style={{ color: 'rgba(239,68,68,0.6)' }}>
-                    ERROR
-                  </span>
+                  <div className="w-1.5 h-1.5 rounded-full bg-cl-red" />
+                  <span className="font-mono text-xs text-cl-red">ERROR</span>
                 </div>
               )}
               {saveStatus === 'idle' && (
-                <span className="font-mono text-[0.6rem] tracking-[0.1em]" style={{ color: 'rgba(255,255,255,0.2)' }}>
-                  EDITING
-                </span>
+                <span className="font-mono text-xs text-cl-muted">EDITING</span>
               )}
             </div>
           </div>
         </div>
 
-        <button
-          onClick={handleExport}
-          className="btn-primary"
-        >
+        <button onClick={handleExport} className="btn-primary">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M7 2V8M7 2L4.5 4.5M7 2L9.5 4.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M2 8V11C2 11.5523 2.44772 12 3 12H11C11.5523 12 12 11.5523 12 11V8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
-          <span className="font-mono text-[0.75rem] tracking-[0.05em]">Export</span>
+          <span className="font-mono text-sm">Export</span>
         </button>
       </div>
 
       {/* Split View */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Panel — Editor */}
-        <div
-          className="w-1/2 overflow-auto"
-          style={{ borderRight: '1px solid rgba(6,182,212,0.08)' }}
-        >
+        <div className="w-1/2 overflow-auto border-r border-cl-border">
           <div className="p-6">
             {/* Metadata Section */}
-            <div
-              className="corner-brackets mb-8 p-5 rounded-sm"
-              style={{
-                background: 'rgba(0,0,0,0.3)',
-                border: '1px solid rgba(6,182,212,0.12)',
-              }}
-            >
+            <div className="bg-cl-card border border-cl-border rounded-2xl mb-8 p-5">
               <div className="flex items-center gap-3 mb-5">
-                <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(6,182,212,0.5)' }} />
-                <span className="font-mono text-[0.7rem] tracking-[0.12em] uppercase" style={{ color: 'rgba(6,182,212,0.5)' }}>
+                <div className="w-2 h-2 rounded-full bg-cl-cyan" />
+                <span className="font-mono text-sm text-cl-cyan uppercase tracking-wider">
                   Project Settings
                 </span>
               </div>
@@ -229,14 +188,13 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
               </div>
             </div>
 
-            {/* Section divider */}
             <div className="section-divider" />
 
             {/* Section Tabs */}
             <div className="mb-6">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(6,182,212,0.5)' }} />
-                <span className="font-mono text-[0.7rem] tracking-[0.12em] uppercase" style={{ color: 'rgba(6,182,212,0.5)' }}>
+                <div className="w-2 h-2 rounded-full bg-cl-cyan" />
+                <span className="font-mono text-sm text-cl-cyan uppercase tracking-wider">
                   Content Sections
                 </span>
               </div>
@@ -248,14 +206,13 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
                     <button
                       key={section.id}
                       onClick={() => setActiveSection(section.id)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm font-mono text-[0.7rem] tracking-[0.05em] transition-all"
-                      style={{
-                        background: isActive ? 'rgba(6,182,212,0.12)' : 'rgba(0,0,0,0.3)',
-                        border: isActive ? '1px solid rgba(6,182,212,0.3)' : '1px solid rgba(6,182,212,0.08)',
-                        color: isActive ? '#06B6D4' : 'rgba(255,255,255,0.35)',
-                      }}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-mono text-sm transition-all ${
+                        isActive
+                          ? 'bg-cl-card border border-cl-cyan/30 text-cl-cyan'
+                          : 'bg-cl-card border border-cl-border text-cl-muted hover:text-white'
+                      }`}
                     >
-                      <span style={{ color: 'rgba(6,182,212,0.3)', fontSize: '0.6rem' }}>
+                      <span className="text-xs text-cl-muted">
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       {section.type.charAt(0).toUpperCase() + section.type.slice(1)}
@@ -278,18 +235,11 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
         </div>
 
         {/* Right Panel — Preview */}
-        <div className="w-1/2 overflow-auto" style={{ background: '#030305' }}>
-          <div
-            className="sticky top-0 z-10 px-5 py-3"
-            style={{
-              background: 'rgba(3,3,5,0.95)',
-              borderBottom: '1px solid rgba(6,182,212,0.08)',
-              backdropFilter: 'blur(20px)',
-            }}
-          >
+        <div className="w-1/2 overflow-auto bg-cl-bg">
+          <div className="sticky top-0 z-10 px-5 py-3 bg-cl-bg/95 backdrop-blur-sm border-b border-cl-border">
             <div className="flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/60 animate-pulse" />
-              <span className="font-mono text-[0.65rem] tracking-[0.12em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
+              <div className="w-2 h-2 rounded-full bg-cl-green animate-pulse" />
+              <span className="font-mono text-sm text-cl-muted uppercase tracking-wider">
                 Live Preview
               </span>
             </div>
