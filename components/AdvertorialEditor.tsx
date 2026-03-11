@@ -85,7 +85,6 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
   };
 
   const handleExport = () => {
-    // Simple HTML export (you can enhance this)
     const content = JSON.stringify(project, null, 2);
     const blob = new Blob([content], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -99,74 +98,130 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
   return (
     <div className="flex-1 flex flex-col h-screen overflow-hidden">
       {/* Top Bar */}
-      <div className="border-b border-cl-border bg-cl-card px-6 py-4 flex items-center justify-between">
+      <div
+        className="px-5 py-3.5 flex items-center justify-between shrink-0"
+        style={{
+          background: 'rgba(3,3,5,0.95)',
+          borderBottom: '1px solid rgba(6,182,212,0.1)',
+          backdropFilter: 'blur(20px)',
+        }}
+      >
         <div className="flex items-center gap-4">
           <button
             onClick={onBack}
-            className="px-4 py-2 rounded-lg bg-cl-bg hover:bg-cl-bg/80 text-cl-muted hover:text-white transition-all"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-sm transition-all"
+            style={{
+              background: 'rgba(0,0,0,0.4)',
+              border: '1px solid rgba(6,182,212,0.1)',
+              color: 'rgba(255,255,255,0.4)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(6,182,212,0.25)';
+              e.currentTarget.style.color = 'rgba(255,255,255,0.7)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(6,182,212,0.1)';
+              e.currentTarget.style.color = 'rgba(255,255,255,0.4)';
+            }}
           >
-            ← Back
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M9 3L5 7L9 11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+            </svg>
+            <span className="font-mono text-[0.7rem] tracking-[0.05em]">Back</span>
           </button>
+
+          <div className="h-4 w-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
+
           <div>
-            <h2 className="text-white font-semibold">{template.name}</h2>
-            <p className="text-cl-muted text-sm">
-              {saveStatus === 'saved' && '✓ Saved'}
-              {saveStatus === 'error' && '⚠ Error saving'}
-              {saveStatus === 'idle' && 'Editing...'}
-            </p>
+            <h2 className="text-white font-medium text-[0.9rem]">{template.name}</h2>
+            <div className="flex items-center gap-2 mt-0.5">
+              {saveStatus === 'saved' && (
+                <div className="flex items-center gap-1.5">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(16,185,129,0.6)' }} />
+                  <span className="font-mono text-[0.6rem] tracking-[0.1em]" style={{ color: 'rgba(16,185,129,0.6)' }}>
+                    SAVED
+                  </span>
+                </div>
+              )}
+              {saveStatus === 'error' && (
+                <div className="flex items-center gap-1.5">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(239,68,68,0.6)' }} />
+                  <span className="font-mono text-[0.6rem] tracking-[0.1em]" style={{ color: 'rgba(239,68,68,0.6)' }}>
+                    ERROR
+                  </span>
+                </div>
+              )}
+              {saveStatus === 'idle' && (
+                <span className="font-mono text-[0.6rem] tracking-[0.1em]" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                  EDITING
+                </span>
+              )}
+            </div>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleExport}
-            className="px-4 py-2 rounded-lg bg-cl-cyan hover:bg-cl-cyan-light text-white font-medium transition-all"
-          >
-            📤 Export
-          </button>
-        </div>
+
+        <button
+          onClick={handleExport}
+          className="btn-primary"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 2V8M7 2L4.5 4.5M7 2L9.5 4.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M2 8V11C2 11.5523 2.44772 12 3 12H11C11.5523 12 12 11.5523 12 11V8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+          </svg>
+          <span className="font-mono text-[0.75rem] tracking-[0.05em]">Export</span>
+        </button>
       </div>
 
       {/* Split View */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Panel - Editor */}
-        <div className="w-1/2 border-r border-cl-border overflow-auto">
+        {/* Left Panel — Editor */}
+        <div
+          className="w-1/2 overflow-auto"
+          style={{ borderRight: '1px solid rgba(6,182,212,0.08)' }}
+        >
           <div className="p-6">
             {/* Metadata Section */}
-            <div className="mb-8 p-6 rounded-xl border border-cl-border bg-cl-card">
-              <h3 className="text-white font-semibold mb-4">Project Settings</h3>
+            <div
+              className="corner-brackets mb-8 p-5 rounded-sm"
+              style={{
+                background: 'rgba(0,0,0,0.3)',
+                border: '1px solid rgba(6,182,212,0.12)',
+              }}
+            >
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(6,182,212,0.5)' }} />
+                <span className="font-mono text-[0.7rem] tracking-[0.12em] uppercase" style={{ color: 'rgba(6,182,212,0.5)' }}>
+                  Project Settings
+                </span>
+              </div>
+
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-cl-muted mb-2">
-                    Product Name
-                  </label>
+                  <label className="label-mono block mb-2">Product Name</label>
                   <input
                     type="text"
                     value={project.metadata.productName}
                     onChange={(e) => handleMetadataUpdate({ productName: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg bg-cl-bg border border-cl-border text-white placeholder-cl-muted focus:outline-none focus:border-cl-cyan transition-colors"
+                    className="input w-full"
                     placeholder="Enter product name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-cl-muted mb-2">
-                    Page Title
-                  </label>
+                  <label className="label-mono block mb-2">Page Title</label>
                   <input
                     type="text"
                     value={project.metadata.title}
                     onChange={(e) => handleMetadataUpdate({ title: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg bg-cl-bg border border-cl-border text-white placeholder-cl-muted focus:outline-none focus:border-cl-cyan transition-colors"
+                    className="input w-full"
                     placeholder="Enter page title"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-cl-muted mb-2">
-                    Meta Description
-                  </label>
+                  <label className="label-mono block mb-2">Meta Description</label>
                   <textarea
                     value={project.metadata.description}
                     onChange={(e) => handleMetadataUpdate({ description: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg bg-cl-bg border border-cl-border text-white placeholder-cl-muted focus:outline-none focus:border-cl-cyan transition-colors"
+                    className="textarea w-full"
                     rows={3}
                     placeholder="Enter meta description"
                   />
@@ -174,23 +229,39 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
               </div>
             </div>
 
+            {/* Section divider */}
+            <div className="section-divider" />
+
             {/* Section Tabs */}
             <div className="mb-6">
-              <h3 className="text-white font-semibold mb-4">Content Sections</h3>
-              <div className="flex flex-wrap gap-2">
-                {template.sections.map((section) => (
-                  <button
-                    key={section.id}
-                    onClick={() => setActiveSection(section.id)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                      activeSection === section.id
-                        ? 'bg-cl-cyan text-white'
-                        : 'bg-cl-card text-cl-muted hover:text-white hover:bg-cl-bg'
-                    }`}
-                  >
-                    {section.type.charAt(0).toUpperCase() + section.type.slice(1)}
-                  </button>
-                ))}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(6,182,212,0.5)' }} />
+                <span className="font-mono text-[0.7rem] tracking-[0.12em] uppercase" style={{ color: 'rgba(6,182,212,0.5)' }}>
+                  Content Sections
+                </span>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5">
+                {template.sections.map((section, i) => {
+                  const isActive = activeSection === section.id;
+                  return (
+                    <button
+                      key={section.id}
+                      onClick={() => setActiveSection(section.id)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm font-mono text-[0.7rem] tracking-[0.05em] transition-all"
+                      style={{
+                        background: isActive ? 'rgba(6,182,212,0.12)' : 'rgba(0,0,0,0.3)',
+                        border: isActive ? '1px solid rgba(6,182,212,0.3)' : '1px solid rgba(6,182,212,0.08)',
+                        color: isActive ? '#06B6D4' : 'rgba(255,255,255,0.35)',
+                      }}
+                    >
+                      <span style={{ color: 'rgba(6,182,212,0.3)', fontSize: '0.6rem' }}>
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      {section.type.charAt(0).toUpperCase() + section.type.slice(1)}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -206,13 +277,24 @@ export default function AdvertorialEditor({ template, onBack }: AdvertorialEdito
           </div>
         </div>
 
-        {/* Right Panel - Preview */}
-        <div className="w-1/2 bg-cl-bg overflow-auto">
-          <div className="sticky top-0 z-10 p-4 bg-cl-card border-b border-cl-border">
-            <h3 className="text-white font-semibold">Live Preview</h3>
-            <p className="text-cl-muted text-sm">Changes update automatically</p>
+        {/* Right Panel — Preview */}
+        <div className="w-1/2 overflow-auto" style={{ background: '#030305' }}>
+          <div
+            className="sticky top-0 z-10 px-5 py-3"
+            style={{
+              background: 'rgba(3,3,5,0.95)',
+              borderBottom: '1px solid rgba(6,182,212,0.08)',
+              backdropFilter: 'blur(20px)',
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/60 animate-pulse" />
+              <span className="font-mono text-[0.65rem] tracking-[0.12em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                Live Preview
+              </span>
+            </div>
           </div>
-          <div className="p-6">
+          <div className="p-5">
             <AdvertorialPreview project={project} />
           </div>
         </div>

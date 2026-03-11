@@ -9,70 +9,112 @@ interface TemplateSelectorProps {
 
 export default function TemplateSelector({ onSelectTemplate }: TemplateSelectorProps) {
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-[960px] mx-auto">
       {/* Heading */}
-      <div className="mb-8 fade-in">
-        <h1 className="text-4xl font-bold text-white mb-2">Templates</h1>
-        <p className="text-cl-muted">
-          Choose a proven template optimized for conversions. Each template follows best practices
+      <div className="mb-10 fade-in">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="h-px flex-shrink-0" style={{ width: '2rem', background: 'rgba(6,182,212,0.4)' }} />
+          <span className="font-mono text-[0.7rem] tracking-[0.15em] uppercase" style={{ color: 'rgba(6,182,212,0.5)' }}>
+            Select Template
+          </span>
+        </div>
+        <h1
+          className="text-[clamp(2rem,5vw,3rem)] font-extrabold text-white leading-tight"
+          style={{ letterSpacing: '-0.02em' }}
+        >
+          Templates
+        </h1>
+        <p className="mt-2 text-[0.95rem] max-w-2xl" style={{ color: 'rgba(255,255,255,0.5)', lineHeight: 1.7 }}>
+          Choose a proven template optimized for conversions. Each follows best practices
           for persuasive copywriting and user engagement.
         </p>
       </div>
 
       {/* Template Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
         {templates.map((template, index) => (
           <button
             key={template.id}
             onClick={() => onSelectTemplate(template)}
-            className={`p-6 rounded-xl border border-cl-border bg-cl-card hover:border-cl-cyan hover:bg-cl-card/80 transition-all text-left group fade-in fade-in-delay-${index + 1}`}
+            className={`corner-brackets text-left p-6 rounded-sm transition-all duration-200 group fade-in fade-in-delay-${index + 1}`}
+            style={{
+              background: 'rgba(0,0,0,0.4)',
+              border: '1px solid rgba(6,182,212,0.15)',
+              backdropFilter: 'blur(8px)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(6,182,212,0.4)';
+              e.currentTarget.style.background = 'rgba(6,182,212,0.03)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(6,182,212,0.15)';
+              e.currentTarget.style.background = 'rgba(0,0,0,0.4)';
+            }}
           >
-            {/* Template Icon/Category */}
-            <div className="inline-block px-3 py-1 rounded-full bg-cl-cyan/10 border border-cl-cyan/20 mb-4">
-              <span className="text-xs font-mono uppercase tracking-wider text-cl-cyan">
-                {template.category}
-              </span>
+            {/* Category pill */}
+            <div className="pill mb-5">
+              {template.category}
             </div>
 
             {/* Template Name */}
-            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cl-cyan transition-colors">
+            <h3
+              className="text-white font-bold text-[1.05rem] mb-3 group-hover:text-cl-cyan transition-colors"
+              style={{ letterSpacing: '-0.01em' }}
+            >
               {template.name}
             </h3>
 
-            {/* Template Description */}
-            <p className="text-cl-muted text-sm leading-relaxed mb-6">
+            {/* Description */}
+            <p className="text-[0.85rem] mb-6" style={{ color: 'rgba(255,255,255,0.4)', lineHeight: 1.6 }}>
               {template.description}
             </p>
 
-            {/* Features List */}
-            <ul className="space-y-2 mb-6">
+            {/* Features — arrow list */}
+            <ul className="space-y-0 mb-6">
               {template.features.map((feature, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-cl-muted">
-                  <span className="text-cl-cyan mt-1">→</span>
-                  <span>{feature}</span>
+                <li
+                  key={i}
+                  className="flex items-start gap-2.5 py-2"
+                  style={{
+                    borderBottom: i < template.features.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                  }}
+                >
+                  <span className="font-mono text-[0.75rem] mt-px" style={{ color: 'rgba(6,182,212,0.4)' }}>→</span>
+                  <span className="text-[0.8rem]" style={{ color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>{feature}</span>
                 </li>
               ))}
             </ul>
 
             {/* CTA */}
-            <div className="flex items-center gap-2 text-cl-cyan font-medium text-sm group-hover:gap-3 transition-all">
-              <span>Use Template</span>
-              <span>→</span>
+            <div className="flex items-center gap-2 transition-all group-hover:gap-3">
+              <span className="font-mono text-[0.75rem] tracking-[0.05em]" style={{ color: 'rgba(6,182,212,0.6)' }}>
+                Use Template
+              </span>
+              <span className="font-mono text-[0.75rem]" style={{ color: 'rgba(6,182,212,0.4)' }}>→</span>
             </div>
           </button>
         ))}
       </div>
 
-      {/* Info Section */}
-      <div className="p-6 rounded-xl border border-cl-cyan/30 bg-cl-cyan/5 fade-in fade-in-delay-4">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-2 h-2 rounded-full bg-cl-cyan" />
-          <h3 className="font-mono text-sm uppercase tracking-wider text-cl-cyan">
+      {/* Section divider */}
+      <div className="section-divider" />
+
+      {/* What You Get */}
+      <div
+        className="corner-brackets corner-brackets-lg p-6 rounded-sm mb-10 fade-in fade-in-delay-4"
+        style={{
+          background: 'rgba(6,182,212,0.02)',
+          border: '1px solid rgba(6,182,212,0.15)',
+        }}
+      >
+        <div className="flex items-center gap-3 mb-5">
+          <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#06B6D4' }} />
+          <span className="font-mono text-[0.7rem] tracking-[0.12em] uppercase" style={{ color: 'rgba(6,182,212,0.6)' }}>
             What You Get
-          </h3>
+          </span>
         </div>
-        
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-0">
           {[
             'Section-by-section editor',
             'Live preview mode',
@@ -81,11 +123,18 @@ export default function TemplateSelector({ onSelectTemplate }: TemplateSelectorP
             'AI suggestions',
             'SEO meta tags included',
           ].map((feature, i) => (
-            <li key={i} className="flex items-center gap-3 text-cl-muted">
-              <svg className="w-4 h-4 text-cl-green" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            <li
+              key={i}
+              className="flex items-center gap-3 py-2.5"
+              style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+            >
+              <svg
+                width="14" height="14" viewBox="0 0 14 14" fill="none"
+                style={{ color: 'rgba(6,182,212,0.5)', flexShrink: 0 }}
+              >
+                <path d="M11.5 3.5L5.5 10L2.5 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span>{feature}</span>
+              <span className="text-[0.85rem]" style={{ color: 'rgba(255,255,255,0.5)' }}>{feature}</span>
             </li>
           ))}
         </ul>

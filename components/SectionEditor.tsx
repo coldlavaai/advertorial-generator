@@ -19,8 +19,8 @@ export default function SectionEditor({ section, content, onUpdate, productName 
     const value = (content[field] as string) || '';
 
     return (
-      <div className="mb-6">
-        <label className="block font-mono text-xs uppercase tracking-wider text-cyan-400/60 mb-2">
+      <div className="mb-5">
+        <label className="label-mono block mb-2">
           {label}
         </label>
         {type === 'textarea' ? (
@@ -28,7 +28,7 @@ export default function SectionEditor({ section, content, onUpdate, productName 
             value={value}
             onChange={(e) => onUpdate({ [field]: e.target.value })}
             placeholder={placeholder || `Enter ${label.toLowerCase()}...`}
-            className="textarea w-full min-h-[120px]"
+            className="textarea w-full min-h-[110px]"
             rows={4}
           />
         ) : (
@@ -40,8 +40,8 @@ export default function SectionEditor({ section, content, onUpdate, productName 
             className="input w-full"
           />
         )}
-        <p className="text-xs text-white/30 mt-1">
-          Use [Product Name] as a placeholder for "{productName}"
+        <p className="font-mono text-[0.65rem] mt-1.5 tracking-[0.05em]" style={{ color: 'rgba(255,255,255,0.2)' }}>
+          Use [Product Name] as placeholder for &ldquo;{productName}&rdquo;
         </p>
       </div>
     );
@@ -51,13 +51,14 @@ export default function SectionEditor({ section, content, onUpdate, productName 
     const points = content.bulletPoints || [];
 
     return (
-      <div className="mb-6">
-        <label className="block font-mono text-xs uppercase tracking-wider text-cyan-400/60 mb-2">
-          Bullet Points
-        </label>
+      <div className="mb-5">
+        <label className="label-mono block mb-2">Bullet Points</label>
         <div className="space-y-2">
           {points.map((point, index) => (
-            <div key={index} className="flex gap-2">
+            <div key={index} className="flex gap-2 items-center">
+              <span className="font-mono text-[0.65rem] shrink-0" style={{ color: 'rgba(6,182,212,0.35)' }}>
+                {String(index + 1).padStart(2, '0')}
+              </span>
               <input
                 type="text"
                 value={point}
@@ -74,7 +75,20 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                   const newPoints = points.filter((_, i) => i !== index);
                   onUpdate({ bulletPoints: newPoints });
                 }}
-                className="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 transition-colors"
+                className="w-8 h-8 flex items-center justify-center rounded-sm transition-colors shrink-0"
+                style={{
+                  background: 'rgba(239,68,68,0.06)',
+                  border: '1px solid rgba(239,68,68,0.2)',
+                  color: 'rgba(239,68,68,0.6)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(239,68,68,0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(239,68,68,0.35)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(239,68,68,0.06)';
+                  e.currentTarget.style.borderColor = 'rgba(239,68,68,0.2)';
+                }}
               >
                 ×
               </button>
@@ -82,10 +96,8 @@ export default function SectionEditor({ section, content, onUpdate, productName 
           ))}
         </div>
         <button
-          onClick={() => {
-            onUpdate({ bulletPoints: [...points, ''] });
-          }}
-          className="btn-ghost text-sm mt-2"
+          onClick={() => onUpdate({ bulletPoints: [...points, ''] })}
+          className="btn-ghost text-sm mt-3"
         >
           + Add Point
         </button>
@@ -96,16 +108,17 @@ export default function SectionEditor({ section, content, onUpdate, productName 
   return (
     <div>
       {/* Section Header */}
-      <div className="mb-8">
-        <div className="inline-block px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-3">
-          <span className="text-xs font-mono uppercase tracking-wider text-cyan-400/70">
-            {section.type}
-          </span>
+      <div className="mb-6">
+        <div className="pill mb-3">
+          {section.type}
         </div>
-        <h2 className="text-3xl font-bold text-white">
+        <h2
+          className="text-[1.5rem] font-bold text-white"
+          style={{ letterSpacing: '-0.02em' }}
+        >
           Edit {section.type.charAt(0).toUpperCase() + section.type.slice(1)} Section
         </h2>
-        <p className="text-white/50 mt-2">
+        <p className="mt-1.5 text-[0.85rem]" style={{ color: 'rgba(255,255,255,0.35)' }}>
           Customize this section to match your product and message
         </p>
       </div>
@@ -156,14 +169,16 @@ export default function SectionEditor({ section, content, onUpdate, productName 
       {section.type === 'testimonials' && (
         <div>
           {renderField('Headline', 'headline', 'text', 'Social Proof')}
-          <div className="mt-6">
-            <label className="block font-mono text-xs uppercase tracking-wider text-cyan-400/60 mb-4">
-              Testimonials
-            </label>
+          <div className="mt-5">
+            <label className="label-mono block mb-4">Testimonials</label>
             {(content.testimonials || []).map((testimonial, index) => (
               <div
                 key={testimonial.id}
-                className="corner-brackets bg-white/5 border border-cyan-500/10 p-4 mb-4 rounded-lg"
+                className="corner-brackets p-4 mb-3 rounded-sm"
+                style={{
+                  background: 'rgba(0,0,0,0.3)',
+                  border: '1px solid rgba(6,182,212,0.1)',
+                }}
               >
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <input
@@ -201,7 +216,7 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                   rows={2}
                 />
                 <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-sm text-white/60">
+                  <label className="flex items-center gap-2">
                     <input
                       type="number"
                       min="1"
@@ -214,14 +229,19 @@ export default function SectionEditor({ section, content, onUpdate, productName 
                       }}
                       className="input w-16"
                     />
-                    <span>Star Rating</span>
+                    <span className="font-mono text-[0.7rem]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                      Stars
+                    </span>
                   </label>
                   <button
                     onClick={() => {
                       const newTestimonials = (content.testimonials || []).filter((_, i) => i !== index);
                       onUpdate({ testimonials: newTestimonials });
                     }}
-                    className="text-red-400 hover:text-red-300 text-sm"
+                    className="font-mono text-[0.7rem] tracking-[0.05em] transition-colors"
+                    style={{ color: 'rgba(239,68,68,0.5)' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = 'rgba(239,68,68,0.8)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(239,68,68,0.5)'; }}
                   >
                     Remove
                   </button>
@@ -232,13 +252,7 @@ export default function SectionEditor({ section, content, onUpdate, productName 
               onClick={() => {
                 const newTestimonials = [
                   ...(content.testimonials || []),
-                  {
-                    id: `t${Date.now()}`,
-                    name: '',
-                    role: '',
-                    content: '',
-                    rating: 5,
-                  },
+                  { id: `t${Date.now()}`, name: '', role: '', content: '', rating: 5 },
                 ];
                 onUpdate({ testimonials: newTestimonials });
               }}
@@ -252,16 +266,29 @@ export default function SectionEditor({ section, content, onUpdate, productName 
 
       {/* Pro Tips */}
       <div className="section-divider" />
-      <div className="bg-cyan-500/5 border border-cyan-500/20 rounded-lg p-4">
+      <div
+        className="corner-brackets p-4 rounded-sm"
+        style={{
+          background: 'rgba(6,182,212,0.02)',
+          border: '1px solid rgba(6,182,212,0.12)',
+        }}
+      >
         <div className="flex items-start gap-3">
-          <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <span className="text-cyan-400 text-xs">💡</span>
+          <div
+            className="w-5 h-5 rounded-sm flex items-center justify-center shrink-0 mt-0.5"
+            style={{ background: 'rgba(6,182,212,0.1)', border: '1px solid rgba(6,182,212,0.2)' }}
+          >
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ color: 'rgba(6,182,212,0.6)' }}>
+              <circle cx="5" cy="5" r="4" stroke="currentColor" strokeWidth="1" />
+              <line x1="5" y1="3" x2="5" y2="5.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+              <circle cx="5" cy="7" r="0.5" fill="currentColor" />
+            </svg>
           </div>
           <div>
-            <h4 className="font-mono text-xs uppercase tracking-wider text-cyan-400/80 mb-1">
+            <span className="font-mono text-[0.65rem] tracking-[0.1em] uppercase block mb-1" style={{ color: 'rgba(6,182,212,0.5)' }}>
               Pro Tip
-            </h4>
-            <p className="text-sm text-white/60">
+            </span>
+            <p className="text-[0.8rem]" style={{ color: 'rgba(255,255,255,0.4)', lineHeight: 1.6 }}>
               {getProTip(section.type)}
             </p>
           </div>

@@ -138,7 +138,7 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
                         </div>
                       )}
                       <p className="text-gray-700 italic mb-6 leading-relaxed">
-                        "{testimonial.content}"
+                        &ldquo;{testimonial.content}&rdquo;
                       </p>
                       <div className="border-t border-gray-200 pt-4">
                         <p className="font-bold text-gray-900">{testimonial.name}</p>
@@ -156,7 +156,7 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
         return (
           <section className="py-16 bg-cyan-50 text-center">
             <div className="container mx-auto px-6 max-w-4xl">
-              <div className="inline-block w-20 h-20 bg-cyan-500 rounded-full flex items-center justify-center mb-6">
+              <div className="inline-flex w-20 h-20 bg-cyan-500 rounded-full items-center justify-center mb-6">
                 <span className="text-white text-4xl">✓</span>
               </div>
               <h2 className="text-4xl font-bold mb-6 text-gray-900">
@@ -198,60 +198,75 @@ export default function AdvertorialPreview({ project }: AdvertorialPreviewProps)
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div>
       {/* Preview Toolbar */}
-      <div className="bg-cl-surface border-b border-cyan-500/20 p-4 sticky top-0 z-40">
-        <div className="container mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            <span className="font-mono text-xs uppercase tracking-wider text-white/60">
-              Live Preview
-            </span>
-          </div>
+      <div
+        className="rounded-sm mb-4 p-3 flex items-center justify-between"
+        style={{
+          background: 'rgba(0,0,0,0.4)',
+          border: '1px solid rgba(6,182,212,0.1)',
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/60" />
+          <span className="font-mono text-[0.65rem] tracking-[0.12em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
+            Preview
+          </span>
+        </div>
 
-          <div className="flex items-center gap-2 bg-white/10 rounded-lg p-1">
-            <button
-              onClick={() => setViewMode('desktop')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                viewMode === 'desktop'
-                  ? 'bg-cyan-500 text-white'
-                  : 'text-white/60 hover:text-white'
-              }`}
-            >
-              Desktop
-            </button>
-            <button
-              onClick={() => setViewMode('mobile')}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                viewMode === 'mobile'
-                  ? 'bg-cyan-500 text-white'
-                  : 'text-white/60 hover:text-white'
-              }`}
-            >
-              Mobile
-            </button>
-          </div>
+        <div
+          className="flex items-center gap-0.5 p-0.5 rounded-sm"
+          style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(6,182,212,0.08)' }}
+        >
+          <button
+            onClick={() => setViewMode('desktop')}
+            className="px-3 py-1 rounded-sm font-mono text-[0.65rem] tracking-[0.08em] transition-all"
+            style={{
+              background: viewMode === 'desktop' ? 'rgba(6,182,212,0.15)' : 'transparent',
+              color: viewMode === 'desktop' ? '#06B6D4' : 'rgba(255,255,255,0.3)',
+              border: viewMode === 'desktop' ? '1px solid rgba(6,182,212,0.2)' : '1px solid transparent',
+            }}
+          >
+            Desktop
+          </button>
+          <button
+            onClick={() => setViewMode('mobile')}
+            className="px-3 py-1 rounded-sm font-mono text-[0.65rem] tracking-[0.08em] transition-all"
+            style={{
+              background: viewMode === 'mobile' ? 'rgba(6,182,212,0.15)' : 'transparent',
+              color: viewMode === 'mobile' ? '#06B6D4' : 'rgba(255,255,255,0.3)',
+              border: viewMode === 'mobile' ? '1px solid rgba(6,182,212,0.2)' : '1px solid transparent',
+            }}
+          >
+            Mobile
+          </button>
         </div>
       </div>
 
       {/* Preview Content */}
-      <div className="py-8">
-        <div
-          className={`mx-auto bg-white shadow-2xl transition-all duration-300 ${
-            viewMode === 'mobile' ? 'max-w-[375px]' : 'max-w-full'
-          }`}
-        >
-          {template.sections.map((section) => (
-            <div key={section.id}>{renderSection(section.id)}</div>
-          ))}
+      <div
+        className={`bg-white shadow-2xl transition-all duration-300 rounded-sm overflow-hidden ${
+          viewMode === 'mobile' ? 'max-w-[375px] mx-auto' : 'max-w-full'
+        }`}
+        style={{
+          border: '1px solid rgba(6,182,212,0.08)',
+        }}
+      >
+        {template.sections.map((section) => (
+          <div key={section.id}>{renderSection(section.id)}</div>
+        ))}
 
-          {/* Footer */}
-          <footer className="bg-gray-900 text-white py-12 text-center">
-            <p className="text-sm text-gray-400">
-              Powered by <strong className="text-cyan-400">COLD LAVA</strong>
-            </p>
-          </footer>
-        </div>
+        {/* Footer */}
+        <footer className="bg-gray-900 text-white py-10 text-center">
+          <div className="flex items-center justify-center gap-2">
+            <span className="font-mono text-[0.65rem] tracking-[0.15em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
+              Powered by
+            </span>
+            <span className="font-mono text-[0.75rem] font-bold tracking-[0.1em]" style={{ color: '#06B6D4' }}>
+              COLD LAVA
+            </span>
+          </div>
+        </footer>
       </div>
     </div>
   );
