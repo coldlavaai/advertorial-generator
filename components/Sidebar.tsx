@@ -7,121 +7,81 @@ interface SidebarProps {
 
 export default function Sidebar({ onNavigate, currentView }: SidebarProps) {
   const menuItems = [
-    {
-      id: 'dashboard',
-      label: 'Dashboard',
-      number: '01',
-      icon: (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.2" />
-          <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.2" />
-          <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.2" />
-          <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.2" />
-        </svg>
-      ),
-    },
-    {
-      id: 'templates',
-      label: 'Templates',
-      number: '02',
-      icon: (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="1" width="12" height="14" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
-          <line x1="5" y1="5" x2="11" y2="5" stroke="currentColor" strokeWidth="1.2" />
-          <line x1="5" y1="8" x2="11" y2="8" stroke="currentColor" strokeWidth="1.2" />
-          <line x1="5" y1="11" x2="9" y2="11" stroke="currentColor" strokeWidth="1.2" />
-        </svg>
-      ),
-    },
-    {
-      id: 'editor',
-      label: 'Editor',
-      number: '03',
-      icon: (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.5 1.5L14.5 4.5L5 14H2V11L11.5 1.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
-          <line x1="9.5" y1="3.5" x2="12.5" y2="6.5" stroke="currentColor" strokeWidth="1.2" />
-        </svg>
-      ),
-    },
-    {
-      id: 'exports',
-      label: 'Exports',
-      number: '04',
-      icon: (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 2V10M8 2L5 5M8 2L11 5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M2 10V13C2 13.5523 2.44772 14 3 14H13C13.5523 14 14 13.5523 14 13V10" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-        </svg>
-      ),
-    },
+    { id: 'dashboard', label: 'Dashboard', icon: '◻' },
+    { id: 'templates', label: 'Templates', icon: '◻' },
+    { id: 'editor', label: 'Editor', icon: '✎' },
+    { id: 'exports', label: 'Exports', icon: '↑' },
   ];
 
   return (
-    <div className="w-[260px] flex flex-col h-screen shrink-0 bg-cl-bg border-r border-cl-border">
+    <div style={{
+      width: 240,
+      flexShrink: 0,
+      height: '100vh',
+      background: '#0a0a0a',
+      borderRight: '1px solid #1a1a1a',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
       {/* Logo */}
-      <div className="px-6 py-6 border-b border-cl-border">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-cl-card border border-cl-border flex items-center justify-center">
-            <span className="font-mono font-bold text-sm text-cl-cyan">CL</span>
+      <div style={{ padding: '20px 24px', borderBottom: '1px solid #1a1a1a' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 36, height: 36, borderRadius: 8,
+            background: 'linear-gradient(135deg, #06B6D4, #22D3EE)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <span style={{ fontWeight: 700, fontSize: 13, color: '#fff' }}>CL</span>
           </div>
-          <div className="flex flex-col">
-            <span className="font-mono font-bold text-sm tracking-wider text-white">COLD LAVA</span>
-            <span className="font-mono text-xs tracking-widest uppercase text-cl-muted">
-              Advertorial Gen
-            </span>
+          <div>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, fontSize: 13, color: '#fff', letterSpacing: '0.05em' }}>COLD LAVA</div>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: '#86868B', letterSpacing: '0.05em' }}>ADVERTORIAL GEN</div>
           </div>
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 px-3 py-6 space-y-0.5">
-        <div className="px-3 mb-4">
-          <span className="font-mono text-xs tracking-widest uppercase text-cl-muted">
-            Navigation
-          </span>
-        </div>
-
+      {/* Nav */}
+      <nav style={{ flex: 1, padding: '16px 12px' }}>
         {menuItems.map((item) => {
-          const isActive = currentView === item.id;
+          const active = currentView === item.id;
           return (
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
-                isActive
-                  ? 'bg-cl-card border-l-2 border-cl-cyan'
-                  : 'border-l-2 border-transparent hover:bg-cl-card/50'
-              }`}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                padding: '10px 16px',
+                marginBottom: 4,
+                borderRadius: 8,
+                border: 'none',
+                cursor: 'pointer',
+                background: active ? '#111111' : 'transparent',
+                borderLeft: active ? '2px solid #06B6D4' : '2px solid transparent',
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => { if (!active) e.currentTarget.style.background = '#111111'; }}
+              onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'transparent'; }}
             >
-              <span className={`font-mono text-xs w-4 ${isActive ? 'text-cl-cyan' : 'text-cl-muted'}`}>
-                {item.number}
-              </span>
-              <span className={`transition-colors ${isActive ? 'text-cl-cyan' : 'text-cl-muted group-hover:text-white'}`}>
-                {item.icon}
-              </span>
-              <span className={`font-mono text-sm tracking-wide transition-colors ${
-                isActive ? 'text-cl-cyan' : 'text-cl-muted group-hover:text-white'
-              }`}>
-                {item.label}
-              </span>
+              <span style={{ fontSize: 14, color: active ? '#06B6D4' : '#86868B' }}>{item.icon}</span>
+              <span style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: 13,
+                color: active ? '#06B6D4' : '#86868B',
+                letterSpacing: '0.03em',
+              }}>{item.label}</span>
             </button>
           );
         })}
       </nav>
 
       {/* Footer */}
-      <div className="px-6 py-4 border-t border-cl-border">
-        <div className="flex items-center justify-between">
-          <span className="font-mono text-xs tracking-wider uppercase text-cl-muted">
-            v1.0.0
-          </span>
-          <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-cl-green" />
-            <span className="font-mono text-xs tracking-wider text-cl-muted">
-              Active
-            </span>
-          </div>
+      <div style={{ padding: '16px 24px', borderTop: '1px solid #1a1a1a' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }} />
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: '#86868B' }}>v1.0</span>
         </div>
       </div>
     </div>

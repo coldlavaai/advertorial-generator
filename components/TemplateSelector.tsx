@@ -9,73 +9,96 @@ interface TemplateSelectorProps {
 
 export default function TemplateSelector({ onSelectTemplate }: TemplateSelectorProps) {
   return (
-    <div className="max-w-[960px] mx-auto">
-      {/* Heading */}
-      <div className="mb-10 fade-in">
-        <span className="text-cl-muted text-sm font-mono mb-4 block">SELECT TEMPLATE</span>
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
-          Templates
-        </h1>
-        <p className="text-lg text-cl-muted max-w-2xl leading-relaxed">
-          Choose a proven template optimized for conversions. Each follows best practices
-          for persuasive copywriting and user engagement.
+    <div style={{ maxWidth: 960, margin: '0 auto' }}>
+      <div style={{ marginBottom: 40 }}>
+        <p style={{ color: '#86868B', fontSize: 14, fontFamily: "'JetBrains Mono', monospace", marginBottom: 16 }}>SELECT TEMPLATE</p>
+        <h1 style={{ fontSize: 40, fontWeight: 700, color: '#fff', marginBottom: 8 }}>Templates</h1>
+        <p style={{ fontSize: 18, color: '#86868B', maxWidth: 600, lineHeight: 1.6 }}>
+          Choose a proven template optimized for conversions.
         </p>
       </div>
 
-      {/* Template Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-        {templates.map((template, index) => (
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 40 }}>
+        {templates.map((template) => (
           <button
             key={template.id}
             onClick={() => onSelectTemplate(template)}
-            className={`bg-cl-card border border-cl-border rounded-2xl p-6 text-left hover:border-cl-cyan/30 transition-colors group fade-in fade-in-delay-${index + 1}`}
+            style={{
+              background: '#111111',
+              border: '1px solid #2a2a2a',
+              borderRadius: 16,
+              padding: 24,
+              textAlign: 'left' as const,
+              cursor: 'pointer',
+              transition: 'border-color 0.2s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.borderColor = '#06B6D4')}
+            onMouseLeave={e => (e.currentTarget.style.borderColor = '#2a2a2a')}
           >
-            <div className="pill mb-5">{template.category}</div>
+            <span style={{
+              display: 'inline-block',
+              background: '#1a1a1a',
+              border: '1px solid #2a2a2a',
+              padding: '6px 12px',
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 12,
+              textTransform: 'uppercase' as const,
+              letterSpacing: '0.08em',
+              color: '#06B6D4',
+              borderRadius: 6,
+              marginBottom: 16,
+            }}>
+              {template.category}
+            </span>
 
-            <h3 className="text-white font-semibold text-lg mb-3 group-hover:text-cl-cyan transition-colors">
+            <h3 style={{ color: '#fff', fontWeight: 600, fontSize: 18, marginBottom: 10 }}>
               {template.name}
             </h3>
 
-            <p className="text-cl-muted text-sm mb-6 leading-relaxed">
+            <p style={{ color: '#86868B', fontSize: 14, lineHeight: 1.6, marginBottom: 20 }}>
               {template.description}
             </p>
 
-            {/* Features */}
-            <ul className="space-y-0 mb-6">
-              {template.features.map((feature, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-2.5 py-2"
-                  style={{
-                    borderBottom: i < template.features.length - 1 ? '1px solid #1a1a1a' : 'none',
-                  }}
-                >
-                  <span className="text-cl-cyan text-sm mt-px">→</span>
-                  <span className="text-cl-muted text-sm leading-relaxed">{feature}</span>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, marginBottom: 20 }}>
+              {template.features.map((feature: string, i: number) => (
+                <li key={i} style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 10,
+                  padding: '8px 0',
+                  borderBottom: i < template.features.length - 1 ? '1px solid #1a1a1a' : 'none',
+                }}>
+                  <span style={{ color: '#06B6D4', fontSize: 14 }}>→</span>
+                  <span style={{ color: '#a1a1a6', fontSize: 14, lineHeight: 1.5 }}>{feature}</span>
                 </li>
               ))}
             </ul>
 
-            <div className="flex items-center gap-2 group-hover:gap-3 transition-all">
-              <span className="font-mono text-sm text-cl-cyan">Use Template</span>
-              <span className="text-cl-cyan">→</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, color: '#06B6D4' }}>Use Template</span>
+              <span style={{ color: '#06B6D4' }}>→</span>
             </div>
           </button>
         ))}
       </div>
 
-      <div className="section-divider" />
+      <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(6,182,212,0.15), transparent)', margin: '32px 0' }} />
 
-      {/* What You Get */}
-      <div className="bg-cl-card border border-cl-border rounded-2xl p-6 mb-10 fade-in fade-in-delay-4">
-        <div className="flex items-center gap-3 mb-5">
-          <div className="w-2 h-2 rounded-full bg-cl-cyan" />
-          <span className="font-mono text-sm text-cl-cyan uppercase tracking-wider">
+      <div style={{
+        background: '#111111',
+        border: '1px solid #2a2a2a',
+        borderRadius: 16,
+        padding: 24,
+        marginBottom: 40,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#06B6D4' }} />
+          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, color: '#06B6D4', textTransform: 'uppercase' as const, letterSpacing: '0.08em' }}>
             What You Get
           </span>
         </div>
 
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-0">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
           {[
             'Section-by-section editor',
             'Live preview mode',
@@ -84,18 +107,18 @@ export default function TemplateSelector({ onSelectTemplate }: TemplateSelectorP
             'AI suggestions',
             'SEO meta tags included',
           ].map((feature, i) => (
-            <li
-              key={i}
-              className="flex items-center gap-3 py-2.5"
-              style={{ borderBottom: '1px solid #1a1a1a' }}
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-cl-green shrink-0">
-                <path d="M11.5 3.5L5.5 10L2.5 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <span className="text-cl-muted text-sm">{feature}</span>
-            </li>
+            <div key={i} style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              padding: '10px 0',
+              borderBottom: '1px solid #1a1a1a',
+            }}>
+              <span style={{ color: '#22c55e', fontSize: 14 }}>✓</span>
+              <span style={{ color: '#86868B', fontSize: 14 }}>{feature}</span>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </div>
   );
